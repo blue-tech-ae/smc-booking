@@ -1,0 +1,30 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class EventService extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'event_id',
+        'catering_required',
+        'catering_people',
+        'dietary_requirements',
+        'catering_notes',
+        'photography_required',
+        'photography_type',
+        'security_required',
+        'security_guards',
+        'risk_assessment',
+        'security_notes',
+    ];
+
+    public function event()
+    {
+        return $this->belongsTo(Event::class);
+    }
+}
