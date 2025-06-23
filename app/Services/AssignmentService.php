@@ -23,6 +23,7 @@ class AssignmentService
                     'end_time' => $service->event->end_time,
                     'service_type' => $service->service_type,
                     'details' => $service->details,
+                    'status' => $service->status,
                 ];
             });
     }

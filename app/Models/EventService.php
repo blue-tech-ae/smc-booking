@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\EventNote;
 
 class EventService extends Model
 {
@@ -23,10 +24,16 @@ class EventService extends Model
         'security_guards',
         'risk_assessment',
         'security_notes',
+        'status',
     ];
 
     public function event()
     {
         return $this->belongsTo(Event::class);
+    }
+
+    public function notes()
+    {
+        return $this->hasMany(EventNote::class);
     }
 }

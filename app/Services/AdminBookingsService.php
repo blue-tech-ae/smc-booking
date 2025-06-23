@@ -9,7 +9,7 @@ class AdminBookingsService
 {
     public function getFiltered(array $filters): Collection
     {
-        $query = Event::with('location', 'user');
+        $query = Event::with('location', 'user', 'services');
 
         if (!empty($filters['status'])) {
             $query->where('status', $filters['status']);
