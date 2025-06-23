@@ -68,4 +68,6 @@ Route::middleware(['auth:sanctum', 'role:catering|photography|security'])->group
     Route::get('/my-assignments', [MyAssignmentsController::class, 'index']);
     Route::post('/event-services/{id}/note', [EventNoteController::class, 'store']);
     Route::get('/event-services/{id}', [EventServiceController::class, 'show']);
+    Route::post('/event-services/{id}/accept', [EventServiceController::class, 'accept']);
+    Route::post('/event-services/{id}/reject', [EventServiceController::class, 'reject']);
 });

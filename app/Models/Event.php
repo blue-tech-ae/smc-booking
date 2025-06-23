@@ -35,7 +35,7 @@ class Event extends Model
 
     public function services()
     {
-        return $this->hasOne(EventService::class);
+        return $this->hasMany(EventService::class);
     }
 
     public function cancellationRequest()
