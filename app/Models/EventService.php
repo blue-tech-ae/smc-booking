@@ -11,6 +11,8 @@ class EventService extends Model
 
     protected $fillable = [
         'event_id',
+        'service_type',
+        'assigned_to',
         'catering_required',
         'catering_people',
         'dietary_requirements',

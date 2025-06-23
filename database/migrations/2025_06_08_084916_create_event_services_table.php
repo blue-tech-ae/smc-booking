@@ -16,6 +16,9 @@ return new class extends Migration
 
             $table->foreignId('event_id')->constrained()->onDelete('cascade');
 
+            $table->enum('service_type', ['catering', 'photography', 'security']);
+            $table->foreignId('assigned_to')->nullable()->constrained('users')->onDelete('cascade');
+
             // Catering
             $table->boolean('catering_required')->default(false);
             $table->unsignedInteger('catering_people')->nullable();
