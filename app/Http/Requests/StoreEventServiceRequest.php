@@ -14,6 +14,8 @@ class StoreEventServiceRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'service_type' => 'required|in:catering,photography,security',
+            'assigned_to' => 'required|exists:users,id',
             'catering_required' => 'required|boolean',
             'catering_people' => 'nullable|required_if:catering_required,true|integer|min:1',
             'dietary_requirements' => 'nullable|string',

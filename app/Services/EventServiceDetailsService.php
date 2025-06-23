@@ -10,9 +10,11 @@ class EventServiceDetailsService
 {
     public function store(Event $event, StoreEventServiceRequest $request): EventService
     {
+        $data = $request->validated();
+
         return EventService::updateOrCreate(
-            ['event_id' => $event->id],
-            $request->validated()
+            ['event_id' => $event->id, 'service_type' => $data['service_type']],
+            $data
         );
     }
 
