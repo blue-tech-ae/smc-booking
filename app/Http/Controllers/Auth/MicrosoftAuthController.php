@@ -23,7 +23,7 @@ class MicrosoftAuthController extends Controller
     public function redirect()
     {
         return response()->json([
-            'url' => Socialite::driver('azure')->stateless()->redirect()->getTargetUrl(),
+            'url' => Socialite::driver('microsoft')->stateless()->redirect()->getTargetUrl(),
         ]);
     }
 
@@ -41,7 +41,7 @@ class MicrosoftAuthController extends Controller
     public function callback()
     {
         try {
-            $microsoftUser = Socialite::driver('azure')->stateless()->user();
+            $microsoftUser = Socialite::driver('microsoft')->stateless()->user();
 
             // تأكد من النطاق الصحيح للبريد
             if (!Str::endsWith($microsoftUser->getEmail(), '@yourdomain.com')) {
