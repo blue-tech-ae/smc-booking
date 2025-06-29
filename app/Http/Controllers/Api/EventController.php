@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreEventRequest;
 use App\Services\EventService;
+use App\Http\Requests\StoreEventServiceRequest;
+use Illuminate\Support\Facades\Validator;
+use App\Models\EventService as EventServiceModel;
 use Illuminate\Http\JsonResponse;
 use App\Http\Requests\UpdateEventRequest;
 use Illuminate\Http\Request;
@@ -42,6 +45,19 @@ class EventController extends Controller
     public function store(StoreEventRequest $request): JsonResponse
     {
         $event = $this->eventService->create($request);
+
+        foreach ($request->input('services', []) as $serviceData) {
+            $validator = Validator::make(
+                $serviceData,
+                (new StoreEventServiceRequest())->rules()
+            );
+            $validated = $validator->validate();
+            $validated['event_id'] = $event->id;
+            EventServiceModel::updateOrCreate(
+                ['event_id' => $event->id, 'service_type' => $validated['service_type']],
+                $validated
+            );
+        }
 
         return response()->json([
             'message' => 'Event created successfully',

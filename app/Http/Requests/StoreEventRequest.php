@@ -31,6 +31,7 @@ class StoreEventRequest extends FormRequest
             'location_id' => 'required|exists:locations,id',
             'start_time' => 'required|date|after_or_equal:now',
             'end_time' => 'required|date|after:start_time',
+            'services' => 'sometimes|array',
         ];
     }
 }
