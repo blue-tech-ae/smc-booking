@@ -14,17 +14,12 @@ class EventService extends Model
         'event_id',
         'service_type',
         'assigned_to',
-        'catering_required',
-        'catering_people',
-        'dietary_requirements',
-        'catering_notes',
-        'photography_required',
-        'photography_type',
-        'security_required',
-        'security_guards',
-        'risk_assessment',
-        'security_notes',
+        'details',
         'status',
+    ];
+
+    protected $casts = [
+        'details' => 'array',
     ];
 
     public function event()

@@ -18,22 +18,9 @@ return new class extends Migration
 
             $table->enum('service_type', ['catering', 'photography', 'security']);
             $table->foreignId('assigned_to')->nullable()->constrained('users')->onDelete('cascade');
+            $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending');
 
-            // Catering
-            $table->boolean('catering_required')->default(false);
-            $table->unsignedInteger('catering_people')->nullable();
-            $table->string('dietary_requirements')->nullable();
-            $table->text('catering_notes')->nullable();
-
-            // Photography
-            $table->boolean('photography_required')->default(false);
-            $table->string('photography_type')->nullable();
-
-            // Security
-            $table->boolean('security_required')->default(false);
-            $table->unsignedInteger('security_guards')->nullable();
-            $table->text('risk_assessment')->nullable();
-            $table->text('security_notes')->nullable();
+            $table->json('details')->nullable();
 
             $table->timestamps();
         });
