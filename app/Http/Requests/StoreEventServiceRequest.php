@@ -11,23 +11,31 @@ class StoreEventServiceRequest extends FormRequest
         return true;
     }
 
-    public function rules(): array
+    public function rules(?string $type = null): array
     {
-        return [
+        $rules = [
             'service_type' => 'required|in:catering,photography,security',
             'assigned_to' => 'required|exists:users,id',
-            'catering_required' => 'required|boolean',
-            'catering_people' => 'nullable|required_if:catering_required,true|integer|min:1',
-            'dietary_requirements' => 'nullable|string',
-            'catering_notes' => 'nullable|string',
-
-            'photography_required' => 'required|boolean',
-            'photography_type' => 'nullable|required_if:photography_required,true|string',
-
-            'security_required' => 'required|boolean',
-            'security_guards' => 'nullable|required_if:security_required,true|integer|min:1',
-            'risk_assessment' => 'nullable|string',
-            'security_notes' => 'nullable|string',
+            'details' => 'required|array',
         ];
+
+        $type = $type ?? $this->input('service_type');
+
+        if ($type === 'catering') {
+            $rules['details.required'] = 'required|boolean';
+            $rules['details.people'] = 'nullable|required_if:details.required,true|integer|min:1';
+            $rules['details.dietary_requirements'] = 'nullable|string';
+            $rules['details.notes'] = 'nullable|string';
+        } elseif ($type === 'photography') {
+            $rules['details.required'] = 'required|boolean';
+            $rules['details.type'] = 'nullable|required_if:details.required,true|string';
+        } elseif ($type === 'security') {
+            $rules['details.required'] = 'required|boolean';
+            $rules['details.guards'] = 'nullable|required_if:details.required,true|integer|min:1';
+            $rules['details.risk_assessment'] = 'nullable|string';
+            $rules['details.notes'] = 'nullable|string';
+        }
+
+        return $rules;
     }
 }

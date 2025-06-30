@@ -49,7 +49,7 @@ class EventController extends Controller
         foreach ($request->input('services', []) as $serviceData) {
             $validator = Validator::make(
                 $serviceData,
-                (new StoreEventServiceRequest())->rules()
+                (new StoreEventServiceRequest())->rules($serviceData['service_type'] ?? null)
             );
             $validated = $validator->validate();
             $validated['event_id'] = $event->id;
