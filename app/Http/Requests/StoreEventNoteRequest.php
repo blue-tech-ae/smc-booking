@@ -8,7 +8,7 @@ class StoreEventNoteRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user()->hasAnyRole(['catering', 'photography', 'security']);
+        return $this->user()->hasAnyRole(['Catering', 'Photography', 'Security']);
     }
 
     public function rules(): array

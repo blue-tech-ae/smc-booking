@@ -64,7 +64,7 @@ Route::middleware(['auth:sanctum', 'role:Admin'])->group(function () {
 });
 
 /////////Dashboard - Staff//////////////
-Route::middleware(['auth:sanctum', 'role:catering|photography|security'])->group(function () {
+Route::middleware(['auth:sanctum', 'role:Catering|Photography|Security'])->group(function () {
     Route::get('/my-assignments', [MyAssignmentsController::class, 'index']);
     Route::post('/event-services/{id}/note', [EventNoteController::class, 'store']);
     Route::get('/event-services/{id}', [EventServiceController::class, 'show']);
