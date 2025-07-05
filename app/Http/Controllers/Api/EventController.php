@@ -100,6 +100,20 @@ class EventController extends Controller
 
         $updated = $this->eventService->update($event, $request->validated());
 
+        foreach ($request->input('services', []) as $serviceData) {
+            $validator = Validator::make(
+                $serviceData,
+                (new StoreEventServiceRequest())->rules($serviceData['service_type'] ?? null)
+            );
+            $validated = $validator->validate();
+            $validated['event_id'] = $event->id;
+
+            EventServiceModel::updateOrCreate(
+                ['event_id' => $event->id, 'service_type' => $validated['service_type']],
+                $validated
+            );
+        }
+
         return response()->json([
             'message' => 'Event updated successfully',
             'data' => $updated
