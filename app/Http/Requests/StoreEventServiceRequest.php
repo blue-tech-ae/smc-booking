@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Rules\MatchesServiceRole;
 
 class StoreEventServiceRequest extends FormRequest
 {
@@ -13,13 +14,13 @@ class StoreEventServiceRequest extends FormRequest
 
     public function rules(?string $type = null): array
     {
+        $type = $type ?? $this->input('service_type');
+
         $rules = [
             'service_type' => 'required|in:catering,photography,security',
-            'assigned_to' => 'required|exists:users,id',
+            'assigned_to' => ['nullable', 'exists:users,id', new MatchesServiceRole($type)],
             'details' => 'required|array',
         ];
-
-        $type = $type ?? $this->input('service_type');
 
         if ($type === 'catering') {
             $rules['details.required'] = 'required|boolean';
