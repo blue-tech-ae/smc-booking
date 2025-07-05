@@ -15,6 +15,10 @@ class LoginService
 
         $user = Auth::user();
 
+        if ($user->roles->isEmpty()) {
+            $user->assignRole('General');
+        }
+
         if (!$user->is_active) {
             return 'inactive';
         }
