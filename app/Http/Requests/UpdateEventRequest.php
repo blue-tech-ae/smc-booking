@@ -23,6 +23,7 @@ class UpdateEventRequest extends FormRequest
             'location_id' => 'sometimes|exists:locations,id',
             'start_time' => 'sometimes|date|after_or_equal:now',
             'end_time' => 'sometimes|date|after:start_time',
+            'services' => 'sometimes|array',
         ];
     }
 }
