@@ -8,6 +8,7 @@ use App\Services\EventService;
 use App\Http\Requests\StoreEventServiceRequest;
 use Illuminate\Support\Facades\Validator;
 use App\Models\EventService as EventServiceModel;
+use App\Notifications\ServiceAssignedNotification;
 use Illuminate\Http\JsonResponse;
 use App\Http\Requests\UpdateEventRequest;
 use Illuminate\Http\Request;
@@ -53,10 +54,15 @@ class EventController extends Controller
             );
             $validated = $validator->validate();
             $validated['event_id'] = $event->id;
-            EventServiceModel::updateOrCreate(
+            $service = EventServiceModel::updateOrCreate(
                 ['event_id' => $event->id, 'service_type' => $validated['service_type']],
                 $validated
             );
+
+            $service->refresh();
+            if ($service->assignedUser) {
+                $service->assignedUser->notify(new ServiceAssignedNotification($service));
+            }
         }
 
         return response()->json([
@@ -108,10 +114,15 @@ class EventController extends Controller
             $validated = $validator->validate();
             $validated['event_id'] = $event->id;
 
-            EventServiceModel::updateOrCreate(
+            $service = EventServiceModel::updateOrCreate(
                 ['event_id' => $event->id, 'service_type' => $validated['service_type']],
                 $validated
             );
+
+            $service->refresh();
+            if ($service->assignedUser) {
+                $service->assignedUser->notify(new ServiceAssignedNotification($service));
+            }
         }
 
         return response()->json([
