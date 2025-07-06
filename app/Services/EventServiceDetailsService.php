@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Event;
 use App\Models\EventService;
 use App\Http\Requests\StoreEventServiceRequest;
+use App\Notifications\ServiceAssignedNotification;
 
 class EventServiceDetailsService
 {
@@ -12,10 +13,17 @@ class EventServiceDetailsService
     {
         $data = $request->validated();
 
-        return EventService::updateOrCreate(
+        $service = EventService::updateOrCreate(
             ['event_id' => $event->id, 'service_type' => $data['service_type']],
             $data
         );
+
+        $service->refresh();
+        if ($service->assignedUser) {
+            $service->assignedUser->notify(new ServiceAssignedNotification($service));
+        }
+
+        return $service;
     }
 
     public function getDetails(int $serviceId, int $userId): ?EventService

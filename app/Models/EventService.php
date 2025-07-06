@@ -56,4 +56,9 @@ class EventService extends Model
     {
         return $this->hasMany(EventNote::class);
     }
+
+    public function assignedUser()
+    {
+        return $this->belongsTo(User::class, 'assigned_to');
+    }
 }
