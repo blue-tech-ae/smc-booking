@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Models\Event;
 
 class UpdateEventRequest extends FormRequest
 {
@@ -25,5 +26,29 @@ class UpdateEventRequest extends FormRequest
             'end_time' => 'sometimes|date|after:start_time',
             'services' => 'sometimes|array',
         ];
+    }
+
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            $event = $this->route('event');
+            $locationId = $this->input('location_id', $event->location_id ?? null);
+            $startTime = $this->input('start_time', $event->start_time ?? null);
+            $endTime = $this->input('end_time', $event->end_time ?? null);
+
+            if (!$locationId || !$startTime || !$endTime) {
+                return;
+            }
+
+            $conflict = Event::where('location_id', $locationId)
+                ->where('id', '!=', $event->id)
+                ->where('start_time', '<', $endTime)
+                ->where('end_time', '>', $startTime)
+                ->exists();
+
+            if ($conflict) {
+                $validator->errors()->add('start_time', 'The selected location is unavailable for the chosen time.');
+            }
+        });
     }
 }
