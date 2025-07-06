@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\CancellationController;
 use App\Http\Controllers\Api\EventServiceController;
 use App\Http\Controllers\Api\Staff\EventNoteController;
 use App\Http\Controllers\Api\Staff\MyAssignmentsController;
+use App\Http\Controllers\Api\LocationController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -25,6 +26,9 @@ Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logo
 ////////////Microsoft Auth///////////////////////
 Route::get('/auth/microsoft', [MicrosoftAuthController::class, 'redirect']);
 Route::get('/auth/microsoft/callback', [MicrosoftAuthController::class, 'callback']);
+
+// Locations
+Route::get('/locations', [LocationController::class, 'index']);
 
 //////////Events////////////////
 Route::middleware('auth:sanctum')->group(function () {
