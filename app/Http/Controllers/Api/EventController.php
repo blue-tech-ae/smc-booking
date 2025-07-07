@@ -147,4 +147,34 @@ class EventController extends Controller
             'data' => $bookings
         ]);
     }
+
+    /**
+     * @OA\Get(
+     *     path="/api/events/{id}",
+     *     summary="Get full details of an event",
+     *     tags={"Events"},
+     *     security={{"sanctum":{}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the event",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(response=200, description="Event details"),
+     *     @OA\Response(response=403, description="Not authorized")
+     * )
+     */
+    public function show(Request $request, Event $event): JsonResponse
+    {
+        $user = $request->user();
+
+        if ($event->user_id !== $user->id && !$user->hasAnyRole(['Super Admin', 'Admin'])) {
+            return response()->json(['error' => 'You are not authorized to view this event.'], 403);
+        }
+
+        $event->load('location', 'services');
+
+        return response()->json(['data' => $event]);
+    }
 }

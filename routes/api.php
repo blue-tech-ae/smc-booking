@@ -33,6 +33,7 @@ Route::get('/locations', [LocationController::class, 'index']);
 //////////Events////////////////
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/events', [EventController::class, 'store']);
+    Route::get('/events/{event}', [EventController::class, 'show']);
     Route::put('/events/{event}', [EventController::class, 'update']);
     Route::post('/events/{event}/cancel', [CancellationController::class, 'store']);
     Route::get('/my-bookings', [EventController::class, 'myBookings']);
