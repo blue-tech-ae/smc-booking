@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\EventServiceController;
 use App\Http\Controllers\Api\Staff\EventNoteController;
 use App\Http\Controllers\Api\Staff\MyAssignmentsController;
 use App\Http\Controllers\Api\LocationController;
+use App\Http\Controllers\Api\Admin\AdminPhotographyTypeController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -29,6 +30,7 @@ Route::get('/auth/microsoft/callback', [MicrosoftAuthController::class, 'callbac
 
 // Locations
 Route::get('/locations', [LocationController::class, 'index']);
+Route::get('/photography-types', [\App\Http\Controllers\Api\PhotographyTypeController::class, 'index']);
 
 //////////Events////////////////
 Route::middleware('auth:sanctum')->group(function () {
@@ -66,6 +68,10 @@ Route::middleware(['auth:sanctum', 'role:Admin'])->group(function () {
         Route::put('/{location}', [AdminLocationController::class, 'update']);
         Route::delete('/{location}', [AdminLocationController::class, 'destroy']);
     });
+});
+
+Route::middleware(['auth:sanctum', 'role:Admin|Super Admin'])->prefix('admin/photography-types')->group(function () {
+    Route::post('/', [AdminPhotographyTypeController::class, 'store']);
 });
 
 /////////Dashboard - Staff//////////////
