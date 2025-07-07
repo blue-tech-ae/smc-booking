@@ -70,6 +70,10 @@ Route::middleware(['auth:sanctum', 'role:Admin'])->group(function () {
     });
 });
 
+Route::middleware(['auth:sanctum', 'role:Admin|Super Admin'])->group(function () {
+    Route::put('/admin/users/{user}/role', [AdminUserController::class, 'updateRole']);
+});
+
 Route::middleware(['auth:sanctum', 'role:Admin|Super Admin'])->prefix('admin/photography-types')->group(function () {
     Route::post('/', [AdminPhotographyTypeController::class, 'store']);
 });
