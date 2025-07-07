@@ -29,7 +29,7 @@ class StoreEventServiceRequest extends FormRequest
             $rules['details.notes'] = 'nullable|string';
         } elseif ($type === 'photography') {
             $rules['details.required'] = 'required|boolean';
-            $rules['details.type'] = 'nullable|required_if:details.required,true|string';
+            $rules['details.photography_type_id'] = 'nullable|required_if:details.required,true|exists:photography_types,id';
         } elseif ($type === 'security') {
             $rules['details.required'] = 'required|boolean';
             $rules['details.guards'] = 'nullable|required_if:details.required,true|integer|min:1';
