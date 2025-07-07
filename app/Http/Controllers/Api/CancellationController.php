@@ -48,7 +48,7 @@ class CancellationController extends Controller
 
     public function store(StoreCancellationRequest $request, Event $event): JsonResponse
     {
-        if ($event->user_id !== $request->user()->id || $event->status !== 'approved') {
+        if ($event->user_id !== $request->user()->id) {
             return response()->json(['error' => 'You cannot cancel this event.'], 403);
         }
 
