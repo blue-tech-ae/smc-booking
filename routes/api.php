@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\Admin\AdminEventApprovalController;
 use App\Http\Controllers\Api\Admin\AdminLocationController;
 use App\Http\Controllers\Api\Admin\AdminPendingEventsController;
 use App\Http\Controllers\Api\Admin\AdminUserController;
+use App\Http\Controllers\Api\Admin\AdminRoleController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Auth\MicrosoftAuthController;
 use App\Http\Controllers\Api\EventController;
@@ -72,6 +73,7 @@ Route::middleware(['auth:sanctum', 'role:Admin'])->group(function () {
 
 Route::middleware(['auth:sanctum', 'role:Admin|Super Admin'])->group(function () {
     Route::put('/admin/users/{user}/role', [AdminUserController::class, 'updateRole']);
+    Route::get('/admin/roles', [AdminRoleController::class, 'index']);
 });
 
 Route::middleware(['auth:sanctum', 'role:Admin|Super Admin'])->prefix('admin/photography-types')->group(function () {
