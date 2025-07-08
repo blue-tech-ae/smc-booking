@@ -16,7 +16,8 @@ class FilterCalendarRequest extends FormRequest
         return [
             'status' => 'nullable|in:pending,approved,rejected,cancelled,draft',
             'location_id' => 'nullable|exists:locations,id',
-            'month' => 'nullable|date_format:Y-m', // مثال: 2025-06
+            'date' => 'nullable|date', // مثال: 2025-06-10
+            'search' => 'nullable|string|max:255',
         ];
     }
 }
