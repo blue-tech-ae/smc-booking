@@ -14,7 +14,7 @@ class UpdateUserRoleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'role' => 'required|string|in:Admin,General,Catering,Photography,Security',
+            'role_id' => 'required|integer|exists:roles,id',
         ];
     }
 }

@@ -6,6 +6,7 @@ use App\Models\User;
 use Database\Seeders\RolesTableSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Spatie\Permission\Models\Role;
 
 class UpdateUserRoleTest extends TestCase
 {
@@ -30,8 +31,10 @@ class UpdateUserRoleTest extends TestCase
         $user = User::factory()->create();
         $user->assignRole('General');
 
+        $roleId = Role::where('name', 'Catering')->first()->id;
+
         $response = $this->actingAs($admin)->putJson('/api/admin/users/' . $user->id . '/role', [
-            'role' => 'Catering',
+            'role_id' => $roleId,
         ]);
 
         $response->assertStatus(200);
@@ -46,8 +49,10 @@ class UpdateUserRoleTest extends TestCase
         $user = User::factory()->create();
         $user->assignRole('General');
 
+        $roleId = Role::where('name', 'Admin')->first()->id;
+
         $response = $this->actingAs($super)->putJson('/api/admin/users/' . $user->id . '/role', [
-            'role' => 'Admin',
+            'role_id' => $roleId,
         ]);
 
         $response->assertStatus(200);
@@ -62,8 +67,10 @@ class UpdateUserRoleTest extends TestCase
         $other = User::factory()->create();
         $other->assignRole('General');
 
+        $roleId = Role::where('name', 'Admin')->first()->id;
+
         $response = $this->actingAs($user)->putJson('/api/admin/users/' . $other->id . '/role', [
-            'role' => 'Admin',
+            'role_id' => $roleId,
         ]);
 
         $response->assertStatus(403);
