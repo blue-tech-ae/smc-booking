@@ -94,7 +94,7 @@ class EventController extends Controller
      */
     public function update(UpdateEventRequest $request, Event $event): JsonResponse
     {
-        if ($event->user_id !== $request->user()->id || $event->status !== 'approved') {
+        if ($event->user_id !== $request->user()->id) {
             return response()->json(['error' => 'You are not allowed to edit this event.'], 403);
         }
 
