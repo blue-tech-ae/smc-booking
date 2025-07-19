@@ -12,6 +12,7 @@ use Illuminate\Http\JsonResponse;
 use App\Http\Requests\UpdateEventRequest;
 use Illuminate\Http\Request;
 use App\Models\Event;
+use Carbon\Carbon;
 
 class EventController extends Controller
 {
@@ -94,11 +95,21 @@ class EventController extends Controller
      */
     public function update(UpdateEventRequest $request, Event $event): JsonResponse
     {
-        if ($event->user_id !== $request->user()->id || $event->status !== 'approved') {
+        if ($event->user_id !== $request->user()->id) {
             return response()->json(['error' => 'You are not allowed to edit this event.'], 403);
         }
 
-        $updated = $this->eventService->update($event, $request->validated());
+        if (Carbon::parse($event->start_time)->lessThanOrEqualTo(Carbon::now()->addWeeks(2))) {
+            return response()->json(['error' => 'You cannot modify this event less than two weeks before it starts.'], 403);
+        }
+
+        $data = $request->validated();
+
+        if ($event->status === 'approved') {
+            $data['status'] = 'pending';
+        }
+
+        $updated = $this->eventService->update($event, $data);
 
         foreach ($request->input('services', []) as $serviceData) {
             $validator = Validator::make(
