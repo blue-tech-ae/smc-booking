@@ -9,6 +9,7 @@ use App\Models\CancellationRequest;
 use App\Models\Event;
 use App\Services\CancellationService;
 use Illuminate\Http\JsonResponse;
+use Carbon\Carbon;
 
 /**
  * @OA\Post(
@@ -48,16 +49,29 @@ class CancellationController extends Controller
 
     public function store(StoreCancellationRequest $request, Event $event): JsonResponse
     {
-        if ($event->user_id !== $request->user()->id || $event->status !== 'approved') {
+        if ($event->user_id !== $request->user()->id) {
             return response()->json(['error' => 'You cannot cancel this event.'], 403);
         }
 
-        $cancellation = $this->cancellationService->store($request, $event);
+        if (Carbon::parse($event->start_time)->lessThanOrEqualTo(Carbon::now()->addWeeks(2))) {
+            return response()->json(['error' => 'You cannot cancel this event less than two weeks before it starts.'], 403);
+        }
 
-        return response()->json([
-            'message' => 'Cancellation request submitted',
-            'data' => $cancellation
-        ], 201);
+        if (in_array($event->status, ['approved', 'pending'])) {
+            if ($event->status === 'approved') {
+                $event->status = 'pending';
+                $event->save();
+            }
+
+            $cancellation = $this->cancellationService->store($request, $event);
+
+            return response()->json([
+                'message' => 'Cancellation request submitted',
+                'data' => $cancellation
+            ], 201);
+        }
+
+        return response()->json(['error' => 'You cannot cancel this event.'], 403);
     }
 
     /**
