@@ -13,6 +13,7 @@ use App\Http\Controllers\Auth\MicrosoftAuthController;
 use App\Http\Controllers\Api\EventController;
 use App\Http\Controllers\Api\CancellationController;
 use App\Http\Controllers\Api\EventServiceController;
+use App\Http\Controllers\Api\PasswordController;
 use App\Http\Controllers\Api\Staff\EventNoteController;
 use App\Http\Controllers\Api\Staff\MyAssignmentsController;
 use App\Http\Controllers\Api\LocationController;
@@ -24,6 +25,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
+Route::middleware('auth:sanctum')->put('/user/password', [PasswordController::class, 'update']);
 
 ////////////Microsoft Auth///////////////////////
 Route::get('/auth/microsoft', [MicrosoftAuthController::class, 'redirect']);
