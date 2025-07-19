@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use App\Rules\LocationAvailable;
+use App\Rules\EventLeadTime;
 use App\Models\Event;
 
 class StoreEventRequest extends FormRequest
@@ -31,7 +32,12 @@ class StoreEventRequest extends FormRequest
             'organizer_email' => 'nullable|email|max:255',
             'organizer_phone' => 'nullable|string|max:20',
             'location_id' => 'required|exists:locations,id',
-            'start_time' => 'required|date|after_or_equal:now',
+            'start_time' => [
+                'required',
+                'date',
+                'after_or_equal:now',
+                new EventLeadTime($this->expected_attendance, $this->start_time),
+            ],
             'end_time' => [
                 'required',
                 'date',
