@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Services\AdminUserService;
 use Illuminate\Http\JsonResponse;
 use App\Http\Requests\UpdateUserRoleRequest;
+use App\Http\Requests\SearchUserRequest;
 use App\Models\User;
 use Spatie\Permission\Models\Role;
 
@@ -16,6 +17,13 @@ use Spatie\Permission\Models\Role;
  *     summary="List all users with their roles",
  *     tags={"Admin - Users"},
  *     security={{"sanctum":{}}},
+ *     @OA\Parameter(
+ *         name="search",
+ *         in="query",
+ *         required=false,
+ *         description="Search users by name",
+ *         @OA\Schema(type="string")
+ *     ),
  *     @OA\Response(response=200, description="Users list")
  * )
  */
@@ -28,9 +36,9 @@ class AdminUserController extends Controller
         $this->service = $service;
     }
 
-    public function index(): JsonResponse
+    public function index(SearchUserRequest $request): JsonResponse
     {
-        $users = $this->service->getAll();
+        $users = $this->service->getAll($request->validated());
 
         return response()->json(['data' => $users]);
     }
