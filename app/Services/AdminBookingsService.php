@@ -31,6 +31,14 @@ class AdminBookingsService
             $query->where('title', 'like', '%' . $filters['title'] . '%');
         }
 
+        if (!empty($filters['search'])) {
+            $search = $filters['search'];
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                  ->orWhere('details', 'like', "%{$search}%");
+            });
+        }
+
         return $query->orderByDesc('created_at')->get();
     }
 }

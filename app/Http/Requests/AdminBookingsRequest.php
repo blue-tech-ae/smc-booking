@@ -19,6 +19,7 @@ class AdminBookingsRequest extends FormRequest
             'start_date' => 'nullable|date',
             'organizer_email' => 'nullable|email',
             'title' => 'nullable|string|max:255',
+            'search' => 'nullable|string|max:255',
         ];
     }
 }

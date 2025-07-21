@@ -18,6 +18,8 @@ class PendingEventsRequest extends FormRequest
             'start_date' => 'nullable|date',
             'title' => 'nullable|string|max:255',
             'organizer_email' => 'nullable|email',
+            'status' => 'nullable|in:pending,approved,rejected,cancelled,draft',
+            'search' => 'nullable|string|max:255',
         ];
     }
 }
