@@ -9,8 +9,13 @@ class AdminPendingEventsService
 {
     public function getFiltered(array $filters): Collection
     {
-        $query = Event::with('location', 'user')
-            ->where('status', 'pending');
+        $query = Event::with('location', 'user');
+
+        if (!empty($filters['status'])) {
+            $query->where('status', $filters['status']);
+        } else {
+            $query->where('status', 'pending');
+        }
 
         if (!empty($filters['location_id'])) {
             $query->where('location_id', $filters['location_id']);
@@ -26,6 +31,14 @@ class AdminPendingEventsService
 
         if (!empty($filters['organizer_email'])) {
             $query->where('organizer_email', $filters['organizer_email']);
+        }
+
+        if (!empty($filters['search'])) {
+            $search = $filters['search'];
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                  ->orWhere('details', 'like', "%{$search}%");
+            });
         }
 
         return $query->orderBy('start_time')->get();
