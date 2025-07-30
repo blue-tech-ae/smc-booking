@@ -33,8 +33,8 @@ class EventLeadTimeTest extends TestCase
         $response = $this->actingAs($user)->postJson('/api/events', [
             'title' => 'Test Event',
             'location_id' => $location->id,
-            'start_time' => now()->addWeeks(3)->toDateTimeString(),
-            'end_time' => now()->addWeeks(3)->addDay()->toDateTimeString(),
+            'start_time' => now()->addDays(10)->toDateTimeString(),
+            'end_time' => now()->addDays(11)->toDateTimeString(),
             'expected_attendance' => 40,
         ]);
 
@@ -51,8 +51,8 @@ class EventLeadTimeTest extends TestCase
         $response = $this->actingAs($user)->postJson('/api/events', [
             'title' => 'Allowed Event',
             'location_id' => $location->id,
-            'start_time' => now()->addWeeks(5)->toDateTimeString(),
-            'end_time' => now()->addWeeks(5)->addDay()->toDateTimeString(),
+            'start_time' => now()->addDays(15)->toDateTimeString(),
+            'end_time' => now()->addDays(16)->toDateTimeString(),
             'expected_attendance' => 40,
         ]);
 

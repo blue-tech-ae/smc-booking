@@ -22,23 +22,13 @@ class EventLeadTime implements Rule
             return true;
         }
 
-        $attendance = $this->expectedAttendance ?? 0;
-
-        if ($attendance <= 10) {
-            $minDays = 7;
-        } elseif ($attendance <= 30) {
-            $minDays = 14;
-        } elseif ($attendance <= 50) {
-            $minDays = 28;
-        } else {
-            $minDays = 42;
-        }
-
-        return Carbon::parse($this->startTime)->gte(Carbon::now()->addDays($minDays));
+        // Regardless of expected attendance, the event must be booked
+        // at least 14 days before the start time.
+        return Carbon::parse($this->startTime)->gte(Carbon::now()->addDays(14));
     }
 
     public function message(): string
     {
-        return 'The event must be booked with more notice based on expected attendance.';
+        return 'The event must be booked at least 14 days in advance.';
     }
 }
