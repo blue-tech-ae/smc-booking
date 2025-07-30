@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\PasswordController;
 use App\Http\Controllers\Api\Staff\EventNoteController;
 use App\Http\Controllers\Api\Staff\MyAssignmentsController;
 use App\Http\Controllers\Api\LocationController;
+use App\Http\Controllers\Api\AvailabilityController;
 use App\Http\Controllers\Api\Admin\AdminPhotographyTypeController;
 use Illuminate\Support\Facades\Route;
 
@@ -34,6 +35,7 @@ Route::get('/auth/microsoft/callback', [MicrosoftAuthController::class, 'callbac
 // Locations
 Route::get('/locations', [LocationController::class, 'index']);
 Route::get('/photography-types', [\App\Http\Controllers\Api\PhotographyTypeController::class, 'index']);
+Route::get('/availability', [AvailabilityController::class, 'index']);
 
 //////////Events////////////////
 Route::middleware('auth:sanctum')->group(function () {
