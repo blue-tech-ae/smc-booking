@@ -29,10 +29,11 @@ class StoreEventServiceRequest extends FormRequest
             $rules['details.notes'] = 'nullable|string';
         } elseif ($type === 'photography') {
             $rules['details.required'] = 'required|boolean';
-            $rules['details.photography_type_id'] = 'nullable|required_if:details.required,true|exists:photography_types,id';
+            $rules['details.photography_type_id'] = 'nullable|exists:photography_types,id';
+            $rules['details.notes'] = 'nullable|string';
         } elseif ($type === 'security') {
             $rules['details.required'] = 'required|boolean';
-            $rules['details.guards'] = 'nullable|required_if:details.required,true|integer|min:1';
+            $rules['details.guards'] = 'nullable|integer|min:1';
             $rules['details.risk_assessment'] = 'nullable|string';
             $rules['details.notes'] = 'nullable|string';
         }
