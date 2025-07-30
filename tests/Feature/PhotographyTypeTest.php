@@ -63,6 +63,31 @@ class PhotographyTypeTest extends TestCase
         $response->assertStatus(422);
     }
 
+    public function test_event_creation_allows_missing_photography_type_id(): void
+    {
+        $user = User::factory()->create();
+        $user->assignRole('General');
+
+        $location = Location::factory()->create();
+
+        $response = $this->actingAs($user)->postJson('/api/events', [
+            'title' => 'Test',
+            'location_id' => $location->id,
+            'start_time' => now()->addDay()->toDateTimeString(),
+            'end_time' => now()->addDays(2)->toDateTimeString(),
+            'services' => [
+                [
+                    'service_type' => 'photography',
+                    'details' => [
+                        'required' => true,
+                    ],
+                ],
+            ],
+        ]);
+
+        $response->assertStatus(201);
+    }
+
     public function test_can_fetch_photography_types(): void
     {
         PhotographyType::factory()->count(3)->create();
