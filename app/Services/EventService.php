@@ -9,7 +9,7 @@ class EventService
 {
     public function create(StoreEventRequest $request): Event
     {
-        return Event::create([
+        $event = Event::create([
             'user_id' => $request->user()->id,
             'location_id' => $request->location_id,
             'title' => $request->title,
@@ -22,6 +22,15 @@ class EventService
             'end_time' => $request->end_time,
             'status' => 'pending',
         ]);
+
+        // Notify all admins that a new event requires approval
+        $admins = \App\Models\User::role('Admin')->get();
+        if ($admins->isNotEmpty()) {
+            \Illuminate\Support\Facades\Mail::to($admins)
+                ->send(new \App\Mail\EventApprovalRequest($event));
+        }
+
+        return $event;
     }
 
     public function update(Event $event, array $data): Event
