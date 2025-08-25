@@ -20,6 +20,7 @@ class AdminBookingsRequest extends FormRequest
             'organizer_email' => 'nullable|email',
             'title' => 'nullable|string|max:255',
             'search' => 'nullable|string|max:255',
+            'role' => 'nullable|in:catering,photography,security',
         ];
     }
 }

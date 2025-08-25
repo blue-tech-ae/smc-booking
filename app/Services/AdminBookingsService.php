@@ -39,6 +39,12 @@ class AdminBookingsService
             });
         }
 
+        if (!empty($filters['role']) && in_array($filters['role'], ['catering', 'photography', 'security'])) {
+            $query->whereHas('services', function ($q) use ($filters) {
+                $q->where('service_type', $filters['role']);
+            });
+        }
+
         return $query->orderByDesc('created_at')->get();
     }
 }
