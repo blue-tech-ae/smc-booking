@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\Admin\AdminCalendarOverviewController;
 use App\Http\Controllers\Api\Admin\AdminEventApprovalController;
 use App\Http\Controllers\Api\Admin\AdminLocationController;
 use App\Http\Controllers\Api\Admin\AdminPendingEventsController;
+use App\Http\Controllers\Api\Admin\AdminEventController;
 use App\Http\Controllers\Api\Admin\AdminUserController;
 use App\Http\Controllers\Api\Admin\AdminRoleController;
 use App\Http\Controllers\Api\AuthController;
@@ -65,6 +66,7 @@ Route::middleware(['auth:sanctum', 'role:Admin|Super Admin'])->group(function ()
     Route::prefix('admin/events')->group(function () {
         Route::post('{event}/approve', [AdminEventApprovalController::class, 'approve']);
         Route::post('{event}/reject', [AdminEventApprovalController::class, 'reject']);
+        Route::put('{event}', [AdminEventController::class, 'update']);
     });
     Route::get('/admin/bookings', [AdminAllBookingsController::class, 'index']);
     Route::get('/admin/users', [AdminUserController::class, 'index']);
