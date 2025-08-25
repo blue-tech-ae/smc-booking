@@ -20,6 +20,8 @@ use App\Http\Controllers\Api\LocationController;
 use App\Http\Controllers\Api\AvailabilityController;
 use App\Http\Controllers\Api\Admin\AdminPhotographyTypeController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\V2\LocationController as V2LocationController;
+use App\Http\Controllers\Api\V2\Admin\LocationController as V2AdminLocationController;
 
 
 ///////////////Auth///////////////////////
@@ -36,6 +38,12 @@ Route::get('/auth/microsoft/callback', [MicrosoftAuthController::class, 'callbac
 Route::get('/locations', [LocationController::class, 'index']);
 Route::get('/photography-types', [\App\Http\Controllers\Api\PhotographyTypeController::class, 'index']);
 Route::get('/availability', [AvailabilityController::class, 'index']);
+
+Route::prefix('v2')->group(function () {
+    Route::get('/locations', [V2LocationController::class, 'index']);
+    Route::middleware(['auth:sanctum', 'role:Admin|Super Admin'])
+        ->put('/admin/locations/{location}', [V2AdminLocationController::class, 'update']);
+});
 
 //////////Events////////////////
 Route::middleware('auth:sanctum')->group(function () {
