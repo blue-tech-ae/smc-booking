@@ -59,6 +59,7 @@ Route::middleware('auth:sanctum')->post('/events/{event}/services', [EventServic
 ///////////////Dashboard - Admin//////////////////////////
 
 Route::middleware(['auth:sanctum', 'role:Super Admin|Admin|Catering|Photography|Security'])->get('/admin/calendar-view', [AdminCalendarController::class, 'index']);
+Route::middleware(['auth:sanctum', 'role:Super Admin|Admin|Catering|Photography|Security'])->get('/admin/calendar-view/export', [AdminCalendarController::class, 'export']);
 Route::middleware(['auth:sanctum', 'role:Super Admin|Admin|Catering|Photography|Security'])->get('/admin/calendar-overview', [AdminCalendarOverviewController::class, 'index']);
 
 Route::middleware(['auth:sanctum', 'role:Admin|Super Admin'])->group(function () {
