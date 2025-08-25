@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Event;
 use App\Models\EventService;
 use App\Models\Location;
+use App\Models\Department;
 use App\Models\User;
 use Database\Seeders\RolesTableSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -34,10 +35,13 @@ class AdminBookingsRoleFilterTest extends TestCase
         $owner->assignRole('General');
 
         $location = Location::factory()->create();
+        $department = Department::factory()->create();
 
         $photoEvent = Event::create([
             'user_id' => $owner->id,
             'location_id' => $location->id,
+            'department_id' => $department->id,
+            'campus' => $location->campus->value,
             'title' => 'Photo Event',
             'start_time' => now()->addDay(),
             'end_time' => now()->addDays(2),
@@ -51,6 +55,8 @@ class AdminBookingsRoleFilterTest extends TestCase
         $cateringEvent = Event::create([
             'user_id' => $owner->id,
             'location_id' => $location->id,
+            'department_id' => $department->id,
+            'campus' => $location->campus->value,
             'title' => 'Catering Event',
             'start_time' => now()->addDays(3),
             'end_time' => now()->addDays(4),

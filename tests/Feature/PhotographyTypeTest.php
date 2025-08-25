@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\User;
 use App\Models\Location;
 use App\Models\PhotographyType;
+use App\Models\Department;
 use Database\Seeders\RolesTableSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -43,12 +44,15 @@ class PhotographyTypeTest extends TestCase
         $user->assignRole('General');
 
         $location = Location::factory()->create();
+        $department = Department::factory()->create();
 
         $response = $this->actingAs($user)->postJson('/api/events', [
             'title' => 'Test',
             'location_id' => $location->id,
             'start_time' => now()->addDay()->toDateTimeString(),
             'end_time' => now()->addDays(2)->toDateTimeString(),
+            'department_id' => $department->id,
+            'campus' => $location->campus->value,
             'services' => [
                 [
                     'service_type' => 'photography',
@@ -69,12 +73,15 @@ class PhotographyTypeTest extends TestCase
         $user->assignRole('General');
 
         $location = Location::factory()->create();
+        $department = Department::factory()->create();
 
         $response = $this->actingAs($user)->postJson('/api/events', [
             'title' => 'Test',
             'location_id' => $location->id,
             'start_time' => now()->addDay()->toDateTimeString(),
             'end_time' => now()->addDays(2)->toDateTimeString(),
+            'department_id' => $department->id,
+            'campus' => $location->campus->value,
             'services' => [
                 [
                     'service_type' => 'photography',

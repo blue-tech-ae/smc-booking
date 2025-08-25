@@ -4,6 +4,8 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use App\Models\Event;
+use Illuminate\Validation\Rules\Enum;
+use App\Enums\Campus;
 
 class UpdateEventRequest extends FormRequest
 {
@@ -22,8 +24,12 @@ class UpdateEventRequest extends FormRequest
             'organizer_email' => 'nullable|email|max:255',
             'organizer_phone' => 'nullable|string|max:20',
             'location_id' => 'sometimes|exists:locations,id',
+            'department_id' => 'sometimes|exists:departments,id',
+            'campus' => ['sometimes', new Enum(Campus::class)],
+            'security_note' => 'nullable|string',
             'start_time' => 'sometimes|date|after_or_equal:now',
             'end_time' => 'sometimes|date|after:start_time',
+            'end_date' => 'nullable|date|after_or_equal:start_time',
             'services' => 'sometimes|array',
         ];
     }
@@ -48,6 +54,16 @@ class UpdateEventRequest extends FormRequest
 
             if ($conflict) {
                 $validator->errors()->add('start_time', 'The selected location is unavailable for the chosen time.');
+            }
+
+            $campus = $this->input('campus', $event->campus ?? null);
+            if ($campus && $locationId) {
+                $matches = \App\Models\Location::where('id', $locationId)
+                    ->where('campus', $campus)
+                    ->exists();
+                if (!$matches) {
+                    $validator->errors()->add('location_id', 'The selected location does not belong to the chosen campus.');
+                }
             }
         });
     }

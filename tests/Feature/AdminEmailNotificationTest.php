@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Mail\EventApprovalRequest;
 use App\Models\Location;
+use App\Models\Department;
 use App\Models\User;
 use Database\Seeders\RolesTableSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -35,6 +36,7 @@ class AdminEmailNotificationTest extends TestCase
         $admin->assignRole('Admin');
 
         $location = Location::factory()->create();
+        $department = Department::factory()->create();
 
         $response = $this->actingAs($user)->postJson('/api/events', [
             'title' => 'Email Test',
@@ -42,6 +44,8 @@ class AdminEmailNotificationTest extends TestCase
             'start_time' => now()->addDays(15)->toDateTimeString(),
             'end_time' => now()->addDays(16)->toDateTimeString(),
             'expected_attendance' => 20,
+            'department_id' => $department->id,
+            'campus' => $location->campus->value,
         ]);
 
         $response->assertStatus(201);

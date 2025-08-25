@@ -47,29 +47,32 @@ class EventController extends Controller
      */
     public function store(StoreEventRequest $request): JsonResponse
     {
-        $event = $this->eventService->create($request);
+        [$events, $conflicts] = $this->eventService->create($request);
 
-        foreach ($request->input('services', []) as $serviceData) {
-            $validator = Validator::make(
-                $serviceData,
-                (new StoreEventServiceRequest())->rules($serviceData['service_type'] ?? null)
-            );
-            $validated = $validator->validate();
-            $validated['event_id'] = $event->id;
-            $service = EventServiceModel::updateOrCreate(
-                ['event_id' => $event->id, 'service_type' => $validated['service_type']],
-                $validated
-            );
+        foreach ($events as $event) {
+            foreach ($request->input('services', []) as $serviceData) {
+                $validator = Validator::make(
+                    $serviceData,
+                    (new StoreEventServiceRequest())->rules($serviceData['service_type'] ?? null)
+                );
+                $validated = $validator->validate();
+                $validated['event_id'] = $event->id;
+                $service = EventServiceModel::updateOrCreate(
+                    ['event_id' => $event->id, 'service_type' => $validated['service_type']],
+                    $validated
+                );
 
-            $service->refresh();
-            if ($service->assignedUser) {
-                $service->assignedUser->notify(new ServiceAssignedNotification($service));
+                $service->refresh();
+                if ($service->assignedUser) {
+                    $service->assignedUser->notify(new ServiceAssignedNotification($service));
+                }
             }
         }
 
         return response()->json([
-            'message' => 'Event created successfully',
-            'data' => $event
+            'message' => 'Events created successfully',
+            'data' => $events,
+            'conflicts' => $conflicts,
         ], 201);
     }
 
