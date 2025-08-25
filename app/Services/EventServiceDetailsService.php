@@ -11,6 +11,9 @@ class EventServiceDetailsService
     public function store(Event $event, StoreEventServiceRequest $request): EventService
     {
         $data = $request->validated();
+        // Services no longer require individual staff approval.
+        // Mark them as accepted when created or updated.
+        $data['status'] = 'accepted';
 
         return EventService::updateOrCreate(
             ['event_id' => $event->id, 'service_type' => $data['service_type']],

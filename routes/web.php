@@ -16,3 +16,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+use App\Http\Controllers\EventEmailApprovalController;
+use Illuminate\Support\Facades\URL;
+
+// Signed URL for approving an event directly from email
+Route::get('/events/{event}/approve-email', EventEmailApprovalController::class)
+    ->name('events.email-approve')
+    ->middleware('signed');

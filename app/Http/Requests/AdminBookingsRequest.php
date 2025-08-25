@@ -8,7 +8,7 @@ class AdminBookingsRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user()->hasRole('admin');
+        return $this->user()->hasAnyRole(['Admin', 'Super Admin']);
     }
 
     public function rules(): array
@@ -19,6 +19,7 @@ class AdminBookingsRequest extends FormRequest
             'start_date' => 'nullable|date',
             'organizer_email' => 'nullable|email',
             'title' => 'nullable|string|max:255',
+            'search' => 'nullable|string|max:255',
         ];
     }
 }

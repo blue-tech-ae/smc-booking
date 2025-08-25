@@ -7,13 +7,18 @@ use App\Http\Controllers\Api\Admin\AdminEventApprovalController;
 use App\Http\Controllers\Api\Admin\AdminLocationController;
 use App\Http\Controllers\Api\Admin\AdminPendingEventsController;
 use App\Http\Controllers\Api\Admin\AdminUserController;
+use App\Http\Controllers\Api\Admin\AdminRoleController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Auth\MicrosoftAuthController;
 use App\Http\Controllers\Api\EventController;
 use App\Http\Controllers\Api\CancellationController;
 use App\Http\Controllers\Api\EventServiceController;
+use App\Http\Controllers\Api\PasswordController;
 use App\Http\Controllers\Api\Staff\EventNoteController;
 use App\Http\Controllers\Api\Staff\MyAssignmentsController;
+use App\Http\Controllers\Api\LocationController;
+use App\Http\Controllers\Api\AvailabilityController;
+use App\Http\Controllers\Api\Admin\AdminPhotographyTypeController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -21,14 +26,21 @@ use Illuminate\Support\Facades\Route;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
+Route::middleware('auth:sanctum')->put('/user/password', [PasswordController::class, 'update']);
 
 ////////////Microsoft Auth///////////////////////
 Route::get('/auth/microsoft', [MicrosoftAuthController::class, 'redirect']);
 Route::get('/auth/microsoft/callback', [MicrosoftAuthController::class, 'callback']);
 
+// Locations
+Route::get('/locations', [LocationController::class, 'index']);
+Route::get('/photography-types', [\App\Http\Controllers\Api\PhotographyTypeController::class, 'index']);
+Route::get('/availability', [AvailabilityController::class, 'index']);
+
 //////////Events////////////////
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/events', [EventController::class, 'store']);
+    Route::get('/events/{event}', [EventController::class, 'show']);
     Route::put('/events/{event}', [EventController::class, 'update']);
     Route::post('/events/{event}/cancel', [CancellationController::class, 'store']);
     Route::get('/my-bookings', [EventController::class, 'myBookings']);
@@ -63,8 +75,17 @@ Route::middleware(['auth:sanctum', 'role:Admin'])->group(function () {
     });
 });
 
+Route::middleware(['auth:sanctum', 'role:Admin|Super Admin'])->group(function () {
+    Route::put('/admin/users/{user}/role', [AdminUserController::class, 'updateRole']);
+    Route::get('/admin/roles', [AdminRoleController::class, 'index']);
+});
+
+Route::middleware(['auth:sanctum', 'role:Admin|Super Admin'])->prefix('admin/photography-types')->group(function () {
+    Route::post('/', [AdminPhotographyTypeController::class, 'store']);
+});
+
 /////////Dashboard - Staff//////////////
-Route::middleware(['auth:sanctum', 'role:catering|photography|security'])->group(function () {
+Route::middleware(['auth:sanctum', 'role:Catering|Photography|Security'])->group(function () {
     Route::get('/my-assignments', [MyAssignmentsController::class, 'index']);
     Route::post('/event-services/{id}/note', [EventNoteController::class, 'store']);
     Route::get('/event-services/{id}', [EventServiceController::class, 'show']);

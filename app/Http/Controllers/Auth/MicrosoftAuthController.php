@@ -59,6 +59,10 @@ class MicrosoftAuthController extends Controller
                 ]
             );
 
+            if ($user->roles->isEmpty()) {
+                $user->assignRole('General');
+            }
+
             // إصدار توكن Sanctum
             $token = $user->createToken('auth-token')->plainTextToken;
 

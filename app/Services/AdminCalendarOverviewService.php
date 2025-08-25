@@ -20,11 +20,19 @@ class AdminCalendarOverviewService
             $query->where('location_id', $filters['location_id']);
         }
 
-        if (!empty($filters['month'])) {
-            $start = Carbon::parse($filters['month'])->startOfMonth();
-            $end = $start->copy()->endOfMonth();
+        if (!empty($filters['date'])) {
+            $start = Carbon::parse($filters['date'])->startOfDay();
+            $end = $start->copy()->endOfDay();
 
             $query->whereBetween('start_time', [$start, $end]);
+        }
+
+        if (!empty($filters['search'])) {
+            $search = $filters['search'];
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                  ->orWhere('details', 'like', "%{$search}%");
+            });
         }
 
         return $query->orderBy('start_time')->get();

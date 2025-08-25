@@ -26,11 +26,18 @@ use Illuminate\Http\JsonResponse;
  *         @OA\Schema(type="integer")
  *     ),
  *     @OA\Parameter(
- *         name="month",
+ *         name="date",
  *         in="query",
  *         required=false,
- *         description="Format: YYYY-MM",
- *         @OA\Schema(type="string", example="2025-06")
+ *         description="Format: YYYY-MM-DD",
+ *         @OA\Schema(type="string", example="2025-06-10")
+ *     ),
+ *     @OA\Parameter(
+ *         name="search",
+ *         in="query",
+ *         required=false,
+ *         description="Keyword to search in title or details",
+ *         @OA\Schema(type="string")
  *     ),
  *     @OA\Response(response=200, description="Detailed calendar overview"),
  * )

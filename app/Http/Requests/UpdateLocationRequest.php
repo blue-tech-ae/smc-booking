@@ -8,7 +8,7 @@ class UpdateLocationRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user()?->hasRole('admin');
+        return $this->user()?->hasAnyRole(['Admin', 'Super Admin']);
     }
 
     public function rules(): array

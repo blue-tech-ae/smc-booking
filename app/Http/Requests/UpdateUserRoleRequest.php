@@ -8,13 +8,13 @@ class UpdateUserRoleRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user()->hasRole('admin');
+        return $this->user()->hasAnyRole(['Admin', 'Super Admin']);
     }
 
     public function rules(): array
     {
         return [
-            'role' => 'required|string|in:admin,general,catering,photography,security',
+            'role_id' => 'required|integer|exists:roles,id',
         ];
     }
 }

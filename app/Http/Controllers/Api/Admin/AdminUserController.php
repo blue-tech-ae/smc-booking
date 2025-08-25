@@ -7,6 +7,7 @@ use App\Services\AdminUserService;
 use Illuminate\Http\JsonResponse;
 use App\Http\Requests\UpdateUserRoleRequest;
 use App\Models\User;
+use Spatie\Permission\Models\Role;
 
 
 /**
@@ -49,8 +50,8 @@ class AdminUserController extends Controller
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"role"},
-     *             @OA\Property(property="role", type="string", example="catering")
+     *             required={"role_id"},
+     *             @OA\Property(property="role_id", type="integer", example=3)
      *         )
      *     ),
      *     @OA\Response(response=200, description="User role updated")
@@ -58,10 +59,11 @@ class AdminUserController extends Controller
      */
     public function updateRole(User $user, UpdateUserRoleRequest $request): JsonResponse
     {
-        $newRole = $request->validated('role');
+        $roleId = $request->validated('role_id');
+        $role = Role::findOrFail($roleId);
 
-        // remove old roles
-        $user->syncRoles([$newRole]);
+        // remove old roles and assign the new one
+        $user->syncRoles([$role->name]);
 
         return response()->json([
             'message' => 'User role updated successfully',
