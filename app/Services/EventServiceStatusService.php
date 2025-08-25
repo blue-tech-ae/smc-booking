@@ -10,7 +10,15 @@ class EventServiceStatusService
     {
         $service->status = 'accepted';
         $service->save();
+        
+        $event = $service->event;
+        $total = $event->services()->count();
+        $accepted = $event->services()->where('status', 'accepted')->count();
 
+        if ($total > 0 && $total === $accepted && $event->status !== 'approved') {
+            $event->status = 'service_approved';
+            $event->save();
+        }
         return $service;
     }
 

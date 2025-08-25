@@ -17,7 +17,7 @@ class LocationController extends Controller
 {
     public function index(): JsonResponse
     {
-        $locations = Location::select('id', 'name')->get();
+        $locations = Location::select('id', 'name', 'description')->get();
 
         return response()->json(['data' => $locations]);
     }

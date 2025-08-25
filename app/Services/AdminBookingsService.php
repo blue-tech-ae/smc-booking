@@ -30,7 +30,7 @@ class AdminBookingsService
         if (!empty($filters['title'])) {
             $query->where('title', 'like', '%' . $filters['title'] . '%');
         }
-
+        
         if (!empty($filters['search'])) {
             $search = $filters['search'];
             $query->where(function ($q) use ($search) {

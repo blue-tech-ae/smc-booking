@@ -19,7 +19,6 @@ class PasswordController extends Controller
      *         required=true,
      *         @OA\JsonContent(
      *             required={"password"},
-     *             @OA\Property(property="current_password", type="string"),
      *             @OA\Property(property="password", type="string"),
      *             @OA\Property(property="password_confirmation", type="string")
      *         )
@@ -30,12 +29,6 @@ class PasswordController extends Controller
     public function update(UpdatePasswordRequest $request): JsonResponse
     {
         $user = $request->user();
-
-        if ($user->password) {
-            if (!Hash::check($request->input('current_password'), $user->password)) {
-                return response()->json(['error' => 'Current password is incorrect'], 422);
-            }
-        }
 
         $user->password = Hash::make($request->password);
         $user->save();

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\MicrosoftAuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,3 +25,6 @@ use Illuminate\Support\Facades\URL;
 Route::get('/events/{event}/approve-email', EventEmailApprovalController::class)
     ->name('events.email-approve')
     ->middleware('signed');
+
+Route::get('/auth/microsoft/callback', [MicrosoftAuthController::class, 'callback']);
+

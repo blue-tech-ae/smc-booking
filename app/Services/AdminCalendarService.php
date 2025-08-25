@@ -8,7 +8,7 @@ use Illuminate\Support\Collection;
 
 class AdminCalendarService
 {
-    public function getFilteredEvents(array $filters): Collection
+    public function getFilteredEvents(array $filters, ?string $role = null): Collection
     {
         $query = Event::with('location', 'user', 'services');
 
@@ -32,6 +32,12 @@ class AdminCalendarService
             $query->where(function ($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
                   ->orWhere('details', 'like', "%{$search}%");
+            });
+        }
+        
+        if ($role && in_array($role, ['Catering', 'Photography', 'Security'])) {
+            $query->whereHas('services', function ($q) use ($role) {
+                $q->where('service_type', strtolower($role));
             });
         }
 

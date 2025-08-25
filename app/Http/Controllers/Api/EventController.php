@@ -8,11 +8,13 @@ use App\Services\EventService;
 use App\Http\Requests\StoreEventServiceRequest;
 use Illuminate\Support\Facades\Validator;
 use App\Models\EventService as EventServiceModel;
+use App\Notifications\ServiceAssignedNotification;
 use Illuminate\Http\JsonResponse;
 use App\Http\Requests\UpdateEventRequest;
 use Illuminate\Http\Request;
 use App\Models\Event;
 use Carbon\Carbon;
+
 
 class EventController extends Controller
 {
@@ -54,10 +56,15 @@ class EventController extends Controller
             );
             $validated = $validator->validate();
             $validated['event_id'] = $event->id;
-            EventServiceModel::updateOrCreate(
+            $service = EventServiceModel::updateOrCreate(
                 ['event_id' => $event->id, 'service_type' => $validated['service_type']],
                 $validated
             );
+
+            $service->refresh();
+            if ($service->assignedUser) {
+                $service->assignedUser->notify(new ServiceAssignedNotification($service));
+            }
         }
 
         return response()->json([
@@ -83,7 +90,7 @@ class EventController extends Controller
      *         required=true,
      *         @OA\JsonContent(ref="#/components/schemas/UpdateEventRequest")
      *     ),
-     *     @OA\Response(
+@@ -86,54 +92,59 @@ public function store(StoreEventRequest $request): JsonResponse
      *         response=200,
      *         description="Event updated successfully"
      *     ),
@@ -130,7 +137,7 @@ class EventController extends Controller
             'data' => $updated
         ]);
     }
-
+    
     /**
      * @OA\Get(
      *     path="/api/my-bookings",
@@ -158,7 +165,7 @@ class EventController extends Controller
             'data' => $bookings
         ]);
     }
-
+    
     /**
      * @OA\Get(
      *     path="/api/events/{id}",

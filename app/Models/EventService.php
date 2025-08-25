@@ -24,7 +24,7 @@ class EventService extends Model
         'details' => 'array',
     ];
 
-    protected static function boot()
+     protected static function boot()
     {
         parent::boot();
 
@@ -55,5 +55,11 @@ class EventService extends Model
     public function notes()
     {
         return $this->hasMany(EventNote::class);
+    }
+    
+    
+    public function assignedUser()
+    {
+        return $this->belongsTo(User::class, 'assigned_to');
     }
 }

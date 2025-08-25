@@ -22,7 +22,7 @@ class EventService
             'end_time' => $request->end_time,
             'status' => 'pending',
         ]);
-
+        
         // Notify all admins that a new event requires approval
         $admins = \App\Models\User::role('Admin')->get();
         if ($admins->isNotEmpty()) {

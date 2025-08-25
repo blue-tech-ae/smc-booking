@@ -32,7 +32,7 @@ class AdminPendingEventsService
         if (!empty($filters['organizer_email'])) {
             $query->where('organizer_email', $filters['organizer_email']);
         }
-
+        
         if (!empty($filters['search'])) {
             $search = $filters['search'];
             $query->where(function ($q) use ($search) {

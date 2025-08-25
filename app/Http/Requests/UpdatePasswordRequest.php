@@ -13,14 +13,8 @@ class UpdatePasswordRequest extends FormRequest
 
     public function rules(): array
     {
-        $rules = [
+        return [
             'password' => 'required|string|min:8|confirmed',
         ];
-
-        if ($this->user()?->password) {
-            $rules['current_password'] = 'required|string';
-        }
-
-        return $rules;
     }
 }

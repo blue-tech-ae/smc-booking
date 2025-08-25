@@ -11,6 +11,6 @@ class EventEmailApprovalController extends Controller
     {
         $service->approve($event);
 
-        return view('event-approved');
+        return redirect()->away('https://smc.blue-tech.ae/booking-approved');
     }
 }

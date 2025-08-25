@@ -17,7 +17,7 @@ use Illuminate\Http\JsonResponse;
  *         name="status",
  *         in="query",
  *         required=false,
- *         @OA\Schema(type="string", enum={"draft","pending","approved","rejected","cancelled"})
+ *         @OA\Schema(type="string", enum={"draft","pending","service_approved","approved","rejected","cancelled"})
  *     ),
  *     @OA\Parameter(
  *         name="location_id",
@@ -53,7 +53,14 @@ class AdminCalendarController extends Controller
 
     public function index(FilterCalendarRequest $request): JsonResponse
     {
-        $events = $this->calendarService->getFilteredEvents($request->validated());
+        $user = $request->user();
+        $role = $user->roles->pluck('name')->first();
+
+        if ($user->hasAnyRole(['Admin', 'Super Admin'])) {
+            $events = $this->calendarService->getFilteredEvents($request->validated());
+        } else {
+            $events = $this->calendarService->getFilteredEvents($request->validated(), $role);
+        }
 
         return response()->json(['data' => $events]);
     }

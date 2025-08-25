@@ -14,7 +14,7 @@ class AdminBookingsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'status' => 'nullable|in:pending,approved,rejected,cancelled,draft',
+            'status' => 'nullable|in:pending,service_approved,approved,rejected,cancelled,draft',
             'location_id' => 'nullable|exists:locations,id',
             'start_date' => 'nullable|date',
             'organizer_email' => 'nullable|email',

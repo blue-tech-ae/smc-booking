@@ -15,6 +15,7 @@ class UpdateLocationRequest extends FormRequest
     {
         return [
             'name' => 'required|string|unique:locations,name,' . $this->location->id . '|max:255',
+            'description' => 'nullable|string',
         ];
     }
 }

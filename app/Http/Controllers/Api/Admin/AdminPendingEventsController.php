@@ -37,18 +37,6 @@ use Illuminate\Http\JsonResponse;
  *         required=false,
  *         @OA\Schema(type="string", format="email")
  *     ),
- *     @OA\Parameter(
- *         name="status",
- *         in="query",
- *         required=false,
- *         @OA\Schema(type="string", enum={"draft","pending","approved","rejected","cancelled"})
- *     ),
- *     @OA\Parameter(
- *         name="search",
- *         in="query",
- *         required=false,
- *         @OA\Schema(type="string")
- *     ),
  *     @OA\Response(
  *         response=200,
  *         description="List of pending events"

@@ -4,18 +4,17 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CheckAvailabilityRequest extends FormRequest
+class SearchUserRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true;
+        return $this->user()->hasAnyRole(['Admin', 'Super Admin']);
     }
 
     public function rules(): array
     {
         return [
-            'start_time' => 'required|date|after_or_equal:now',
-            'end_time' => 'required|date|after:start_time',
+            'search' => 'nullable|string|max:255',
         ];
     }
 }

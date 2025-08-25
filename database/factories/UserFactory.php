@@ -37,11 +37,4 @@ class UserFactory extends Factory
             'email_verified_at' => null,
         ]);
     }
-
-    public function withoutPassword(): static
-    {
-        return $this->state(fn (array $attributes) => [
-            'password' => null,
-        ]);
-    }
 }

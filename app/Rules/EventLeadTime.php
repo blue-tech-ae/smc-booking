@@ -24,7 +24,7 @@ class EventLeadTime implements Rule
 
         // Regardless of expected attendance, the event must be booked
         // at least 14 days before the start time.
-        return Carbon::parse($this->startTime)->gte(Carbon::now()->addDays(14));
+        return Carbon::parse($this->startTime)->gte(Carbon::today()->addDays(14));
     }
 
     public function message(): string

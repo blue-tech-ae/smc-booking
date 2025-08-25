@@ -27,6 +27,15 @@ class AdminEventApprovalController extends Controller
      */
     public function approve(Event $event, EventStatusService $service): JsonResponse
     {
+        $total = $event->services()->count();
+        $accepted = $event->services()->where('status', 'accepted')->count();
+
+        if ($total > 0 && $accepted < $total) {
+            return response()->json([
+                'message' => 'All services must approve before final approval.'
+            ], 422);
+        }
+        
         $updated = $service->approve($event);
 
         return response()->json(['data' => $updated]);

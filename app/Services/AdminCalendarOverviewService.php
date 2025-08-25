@@ -8,7 +8,7 @@ use Illuminate\Support\Collection;
 
 class AdminCalendarOverviewService
 {
-    public function getOverview(array $filters): Collection
+    public function getOverview(array $filters, ?string $role = null): Collection
     {
         $query = Event::with('location', 'user', 'services');
 
@@ -26,7 +26,7 @@ class AdminCalendarOverviewService
 
             $query->whereBetween('start_time', [$start, $end]);
         }
-
+        
         if (!empty($filters['search'])) {
             $search = $filters['search'];
             $query->where(function ($q) use ($search) {
@@ -35,6 +35,11 @@ class AdminCalendarOverviewService
             });
         }
 
+        if ($role && in_array($role, ['Catering', 'Photography', 'Security'])) {
+            $query->whereHas('services', function ($q) use ($role) {
+                $q->where('service_type', strtolower($role));
+            });
+        }
         return $query->orderBy('start_time')->get();
     }
 }

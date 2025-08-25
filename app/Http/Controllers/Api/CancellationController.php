@@ -53,7 +53,7 @@ class CancellationController extends Controller
             return response()->json(['error' => 'You cannot cancel this event.'], 403);
         }
 
-        if (Carbon::parse($event->start_time)->lessThanOrEqualTo(Carbon::now()->addWeeks(2))) {
+    if (Carbon::parse($event->start_time)->lessThanOrEqualTo(Carbon::now()->addWeeks(2))) {
             return response()->json(['error' => 'You cannot cancel this event less than two weeks before it starts.'], 403);
         }
 

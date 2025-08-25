@@ -12,7 +12,7 @@ class AvailabilityService
         return Location::whereDoesntHave('events', function ($query) use ($startTime, $endTime) {
             $query->where('start_time', '<', $endTime)
                   ->where('end_time', '>', $startTime);
-        })->select('id', 'name')->get();
+        })->select('id', 'name', 'description')->get();
     }
 
     public function photographyIsAvailable(string $startTime, string $endTime): bool

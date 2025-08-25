@@ -17,7 +17,7 @@ class FilterMyAssignmentsRequest extends FormRequest
             'status' => 'nullable|in:pending,approved,rejected,cancelled,draft',
             'location_id' => 'nullable|exists:locations,id',
             'date' => 'nullable|date',
-            'search' => 'nullable|string|max:255',
+            'query' => 'nullable|string|max:255',
         ];
     }
 }
