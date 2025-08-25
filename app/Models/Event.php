@@ -11,7 +11,9 @@ class Event extends Model
 
     protected $fillable = [
         'user_id',
+        'department_id',
         'location_id',
+        'campus',
         'title',
         'details',
         'expected_attendance',
@@ -20,12 +22,24 @@ class Event extends Model
         'organizer_phone',
         'start_time',
         'end_time',
+        'end_date',
+        'security_note',
         'status',
+    ];
+
+    protected $casts = [
+        'campus' => \App\Enums\Campus::class,
+        'end_date' => 'date',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
     }
 
     public function location()
