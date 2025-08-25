@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\Campus;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateLocationRequest extends FormRequest
 {
@@ -16,6 +18,7 @@ class UpdateLocationRequest extends FormRequest
         return [
             'name' => 'required|string|unique:locations,name,' . $this->location->id . '|max:255',
             'description' => 'nullable|string',
+            'campus' => ['required', 'string', Rule::in(array_column(Campus::cases(), 'value'))],
         ];
     }
 }
