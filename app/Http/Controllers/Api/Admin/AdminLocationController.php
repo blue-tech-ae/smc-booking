@@ -22,8 +22,10 @@ class AdminLocationController extends Controller
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"name"},
-     *             @OA\Property(property="name", type="string", example="Main Hall")
+     *             required={"name","campus"},
+     *             @OA\Property(property="name", type="string", example="Main Hall"),
+     *             @OA\Property(property="campus", type="string", example="Davisson Street Campus"),
+     *             @OA\Property(property="description", type="string", example="<p>Spacious hall</p>")
      *         )
      *     ),
      *     @OA\Response(
@@ -34,6 +36,8 @@ class AdminLocationController extends Controller
      *             @OA\Property(property="data", type="object",
      *                 @OA\Property(property="id", type="integer", example=1),
      *                 @OA\Property(property="name", type="string", example="Main Hall"),
+     *                 @OA\Property(property="campus", type="string", example="Davisson Street Campus"),
+     *                 @OA\Property(property="description", type="string", example="<p>Spacious hall</p>"),
      *                 @OA\Property(property="created_at", type="string", format="date-time"),
      *                 @OA\Property(property="updated_at", type="string", format="date-time")
      *             )
@@ -65,8 +69,10 @@ class AdminLocationController extends Controller
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"name"},
-     *             @OA\Property(property="name", type="string", example="Updated Hall Name")
+     *             required={"name","campus"},
+     *             @OA\Property(property="name", type="string", example="Updated Hall Name"),
+     *             @OA\Property(property="campus", type="string", example="Dalton Road Campus"),
+     *             @OA\Property(property="description", type="string", example="<p>Updated description</p>")
      *         )
      *     ),
      *     @OA\Response(
@@ -77,6 +83,8 @@ class AdminLocationController extends Controller
      *             @OA\Property(property="data", type="object",
      *                 @OA\Property(property="id", type="integer", example=1),
      *                 @OA\Property(property="name", type="string", example="Updated Hall Name"),
+     *                 @OA\Property(property="campus", type="string", example="Dalton Road Campus"),
+     *                 @OA\Property(property="description", type="string", example="<p>Updated description</p>"),
      *                 @OA\Property(property="created_at", type="string", format="date-time"),
      *                 @OA\Property(property="updated_at", type="string", format="date-time")
      *             )
