@@ -39,6 +39,13 @@ use Illuminate\Http\JsonResponse;
  *         description="Keyword to search in title or details",
  *         @OA\Schema(type="string")
  *     ),
+ *     @OA\Parameter(
+ *         name="role",
+ *         in="query",
+ *         required=false,
+ *         description="Filter events by required service",
+ *         @OA\Schema(type="string", enum={"catering","photography","security"})
+ *     ),
  *     @OA\Response(response=200, description="List of events"),
  * )
  */
@@ -54,12 +61,16 @@ class AdminCalendarController extends Controller
     public function index(FilterCalendarRequest $request): JsonResponse
     {
         $user = $request->user();
-        $role = $user->roles->pluck('name')->first();
+        $userRole = $user->roles->pluck('name')->first();
+
+        $filters = $request->validated();
+        $requestedRole = $filters['role'] ?? null;
+        unset($filters['role']);
 
         if ($user->hasAnyRole(['Admin', 'Super Admin'])) {
-            $events = $this->calendarService->getFilteredEvents($request->validated());
+            $events = $this->calendarService->getFilteredEvents($filters, $requestedRole ? ucfirst($requestedRole) : null);
         } else {
-            $events = $this->calendarService->getFilteredEvents($request->validated(), $role);
+            $events = $this->calendarService->getFilteredEvents($filters, $userRole);
         }
 
         return response()->json(['data' => $events]);

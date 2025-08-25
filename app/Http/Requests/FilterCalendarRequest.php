@@ -24,6 +24,7 @@ class FilterCalendarRequest extends FormRequest
             'location_id' => 'nullable|exists:locations,id',
             'date' => 'nullable|date', // مثال: 2025-06-10
             'search' => 'nullable|string|max:255',
+            'role' => 'nullable|in:catering,photography,security',
         ];
     }
 }
