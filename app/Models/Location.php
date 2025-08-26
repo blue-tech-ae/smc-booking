@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\Campus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Event;
@@ -14,7 +13,7 @@ class Location extends Model
     protected $fillable = ['name', 'description', 'campus'];
 
     protected $casts = [
-        'campus' => Campus::class,
+        'campus' => \App\Enums\Campus::class,
     ];
 
     public function setDescriptionAttribute(?string $value): void
