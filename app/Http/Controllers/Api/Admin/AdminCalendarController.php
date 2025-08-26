@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\FilterCalendarRequest;
 use App\Services\AdminCalendarService;
 use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
  * @OA\Get(
@@ -74,5 +75,43 @@ class AdminCalendarController extends Controller
         }
 
         return response()->json(['data' => $events]);
+    }
+
+    public function export(FilterCalendarRequest $request): StreamedResponse
+    {
+        $user = $request->user();
+        $userRole = $user->roles->pluck('name')->first();
+
+        $filters = $request->validated();
+        $requestedRole = $filters['role'] ?? null;
+        unset($filters['role']);
+
+        if ($user->hasAnyRole(['Admin', 'Super Admin'])) {
+            $events = $this->calendarService->getFilteredEvents($filters, $requestedRole ? ucfirst($requestedRole) : null);
+        } else {
+            $events = $this->calendarService->getFilteredEvents($filters, $userRole);
+        }
+
+        $headers = ['Content-Type' => 'text/csv'];
+
+        $callback = function () use ($events) {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, ['ID', 'Title', 'Details', 'Start Time', 'End Time', 'Status', 'Location', 'Created By']);
+            foreach ($events as $event) {
+                fputcsv($file, [
+                    $event->id,
+                    $event->title,
+                    $event->details,
+                    $event->start_time,
+                    $event->end_time,
+                    $event->status,
+                    optional($event->location)->name,
+                    optional($event->user)->name,
+                ]);
+            }
+            fclose($file);
+        };
+
+        return response()->streamDownload($callback, 'events.csv', $headers);
     }
 }
