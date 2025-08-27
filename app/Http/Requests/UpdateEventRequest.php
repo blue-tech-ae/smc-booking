@@ -24,7 +24,7 @@ class UpdateEventRequest extends FormRequest
             'organizer_email' => 'nullable|email|max:255',
             'organizer_phone' => 'nullable|string|max:20',
             'location_id' => 'sometimes|exists:locations,id',
-            'department_id' => 'sometimes|exists:departments,id',
+            'department' => 'sometimes|string|max:255',
             'campus' => ['sometimes', new Enum(Campus::class)],
             'security_note' => 'nullable|string',
             'start_time' => 'sometimes|date|after_or_equal:now',

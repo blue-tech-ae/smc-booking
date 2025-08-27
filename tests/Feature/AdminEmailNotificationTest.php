@@ -44,7 +44,7 @@ class AdminEmailNotificationTest extends TestCase
             'start_time' => now()->addDays(15)->toDateTimeString(),
             'end_time' => now()->addDays(16)->toDateTimeString(),
             'expected_attendance' => 20,
-            'department_id' => $department->id,
+            'department' => $department->name,
             'campus' => $location->campus->value,
         ]);
 

@@ -37,7 +37,7 @@ class EventLeadTimeTest extends TestCase
             'location_id' => $location->id,
             'start_time' => now()->addDays(10)->toDateTimeString(),
             'end_time' => now()->addDays(11)->toDateTimeString(),
-            'department_id' => $department->id,
+            'department' => $department->name,
             'campus' => $location->campus->value,
             'expected_attendance' => 40,
         ]);
@@ -51,13 +51,14 @@ class EventLeadTimeTest extends TestCase
         $user->assignRole('General');
 
         $location = Location::factory()->create();
+        $department = Department::factory()->create();
 
         $response = $this->actingAs($user)->postJson('/api/events', [
             'title' => 'Allowed Event',
             'location_id' => $location->id,
             'start_time' => now()->addDays(15)->toDateTimeString(),
             'end_time' => now()->addDays(16)->toDateTimeString(),
-            'department_id' => $department->id,
+            'department' => $department->name,
             'campus' => $location->campus->value,
             'expected_attendance' => 40,
         ]);

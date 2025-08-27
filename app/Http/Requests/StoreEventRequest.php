@@ -34,7 +34,7 @@ class StoreEventRequest extends FormRequest
             'organizer_email' => 'nullable|email|max:255',
             'organizer_phone' => 'nullable|string|max:20',
             'location_id' => 'required|exists:locations,id',
-            'department_id' => 'required|exists:departments,id',
+            'department' => 'required|string|max:255',
             'campus' => ['required', new Enum(Campus::class)],
             'security_note' => 'nullable|string',
             'start_time' => [
