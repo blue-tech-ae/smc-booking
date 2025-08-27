@@ -46,10 +46,9 @@ class StoreEventRequest extends FormRequest
             'end_time' => [
                 'required',
                 'date',
-                'after:start_time',
+                'after_or_equal:start_time',
                 new LocationAvailable($this->location_id, $this->start_time, $this->end_time)
             ],
-            'end_date' => 'nullable|date|after_or_equal:start_time',
             'recurrence_frequency' => 'nullable|in:daily,weekly,fortnightly',
             'recurrence_count' => 'nullable|integer|min:1|max:52|required_with:recurrence_frequency',
             'services' => 'sometimes|array',

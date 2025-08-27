@@ -30,9 +30,6 @@ class EventService
         for ($i = 0; $i < $count; $i++) {
             $currentStart = (clone $start)->addDays($i * $interval);
             $currentEnd = (clone $end)->addDays($i * $interval);
-            $currentEndDate = $request->end_date
-                ? Carbon::parse($request->end_date)->addDays($i * $interval)->toDateString()
-                : null;
 
             $hasConflict = Event::where('location_id', $request->location_id)
                 ->where('start_time', '<', $currentEnd)
@@ -58,7 +55,6 @@ class EventService
                 'security_note' => $request->security_note,
                 'start_time' => $currentStart,
                 'end_time' => $currentEnd,
-                'end_date' => $currentEndDate,
                 'status' => 'pending',
             ]);
 
