@@ -35,6 +35,8 @@ Route::get('/auth/microsoft/callback', [MicrosoftAuthController::class, 'callbac
 
 // Locations
 Route::get('/locations', [LocationController::class, 'index']);
+Route::get('/campuses', [LocationController::class, 'campuses']);
+Route::get('/locations/{location}/booked-days', [LocationController::class, 'bookedDays']);
 Route::get('/photography-types', [\App\Http\Controllers\Api\PhotographyTypeController::class, 'index']);
 Route::get('/availability', [AvailabilityController::class, 'index']);
 //////////Events////////////////
