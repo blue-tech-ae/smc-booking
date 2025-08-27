@@ -40,7 +40,7 @@ class AdminBookingsRoleFilterTest extends TestCase
         $photoEvent = Event::create([
             'user_id' => $owner->id,
             'location_id' => $location->id,
-            'department_id' => $department->id,
+            'department' => $department->name,
             'campus' => $location->campus->value,
             'title' => 'Photo Event',
             'start_time' => now()->addDay(),
@@ -55,7 +55,7 @@ class AdminBookingsRoleFilterTest extends TestCase
         $cateringEvent = Event::create([
             'user_id' => $owner->id,
             'location_id' => $location->id,
-            'department_id' => $department->id,
+            'department' => $department->name,
             'campus' => $location->campus->value,
             'title' => 'Catering Event',
             'start_time' => now()->addDays(3),

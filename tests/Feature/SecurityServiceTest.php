@@ -37,7 +37,7 @@ class SecurityServiceTest extends TestCase
             'location_id' => $location->id,
             'start_time' => now()->addDay()->toDateTimeString(),
             'end_time' => now()->addDays(2)->toDateTimeString(),
-            'department_id' => $department->id,
+            'department' => $department->name,
             'campus' => $location->campus->value,
             'services' => [
                 [

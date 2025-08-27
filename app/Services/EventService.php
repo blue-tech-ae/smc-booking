@@ -47,7 +47,7 @@ class EventService
             $event = Event::create([
                 'user_id' => $request->user()->id,
                 'location_id' => $request->location_id,
-                'department_id' => $request->department_id,
+                'department' => $request->department,
                 'campus' => $request->campus,
                 'title' => $request->title,
                 'details' => $request->details,

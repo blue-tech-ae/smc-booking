@@ -25,7 +25,7 @@ class EventFactory extends Factory
         return [
             'user_id' => User::factory(),
             'location_id' => Location::factory(),
-            'department_id' => Department::factory(),
+            'department' => Department::factory()->create()->name,
             'campus' => $this->faker->randomElement(array_column(Campus::cases(), 'value')),
             'title' => $this->faker->sentence,
             'details' => $this->faker->paragraph,
