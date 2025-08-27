@@ -22,10 +22,18 @@ class StoreEventServiceRequest extends FormRequest
         ];
 
         if ($type === 'catering') {
-            // $rules['details.required'] = 'required|boolean';
-            $rules['details.people'] = 'nullable|required_if:details.required,true|integer|min:1';
-            $rules['details.dietary_requirements'] = 'nullable|string';
-            $rules['details.notes'] = 'nullable|string';
+            $rules['details.external_guests'] = 'required|boolean';
+            $rules['details.people'] = 'required|integer|min:1';
+            $rules['details.service_time'] = 'required|date_format:H:i';
+            $rules['details.food_types'] = 'required|array|min:1';
+            $rules['details.food_types.*'] = 'string';
+            $rules['details.coffee_station'] = 'required|boolean';
+            $rules['details.beverages'] = 'nullable|array';
+            $rules['details.beverages.*'] = 'string';
+            $rules['details.dietary_requirements'] = 'nullable|array';
+            $rules['details.dietary_requirements.*.type'] = 'required_with:details.dietary_requirements|string';
+            $rules['details.dietary_requirements.*.count'] = 'required_with:details.dietary_requirements|integer|min:1';
+            $rules['details.extra_notes'] = 'nullable|string';
         } elseif ($type === 'photography') {
             // $rules['details.required'] = 'required|boolean';
             $rules['details.photography_type_id'] = 'nullable|exists:photography_types,id';
