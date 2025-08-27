@@ -4,6 +4,7 @@ namespace App\Rules;
 
 use Carbon\Carbon;
 use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
 class EventLeadTime implements Rule
 {
@@ -19,6 +20,11 @@ class EventLeadTime implements Rule
     public function passes($attribute, $value): bool
     {
         if (!$this->startTime) {
+            return true;
+        }
+
+        $user = Auth::user();
+        if ($user && $user->hasAnyRole(['Admin', 'Super Admin'])) {
             return true;
         }
 
