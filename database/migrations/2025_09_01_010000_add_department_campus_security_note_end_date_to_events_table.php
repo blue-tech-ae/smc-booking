@@ -19,8 +19,7 @@ return new class extends Migration
                 Campus::DALTON_ROAD->value,
                 Campus::SGC->value,
             ])->after('location_id');
-            $table->date('end_date')->nullable()->after('end_time');
-            $table->text('security_note')->nullable()->after('end_date');
+            $table->text('security_note')->nullable()->after('end_time');
         });
     }
 
@@ -31,7 +30,7 @@ return new class extends Migration
     {
         Schema::table('events', function (Blueprint $table) {
             $table->dropForeign(['department_id']);
-            $table->dropColumn(['department_id','campus','end_date','security_note']);
+            $table->dropColumn(['department_id','campus','security_note']);
         });
     }
 };

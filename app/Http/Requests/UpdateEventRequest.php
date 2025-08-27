@@ -28,8 +28,7 @@ class UpdateEventRequest extends FormRequest
             'campus' => ['sometimes', new Enum(Campus::class)],
             'security_note' => 'nullable|string',
             'start_time' => 'sometimes|date|after_or_equal:now',
-            'end_time' => 'sometimes|date|after:start_time',
-            'end_date' => 'nullable|date|after_or_equal:start_time',
+            'end_time' => 'sometimes|date|after_or_equal:start_time',
             'services' => 'sometimes|array',
         ];
     }

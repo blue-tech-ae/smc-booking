@@ -35,7 +35,6 @@ class EventFactory extends Factory
             'organizer_phone' => $this->faker->phoneNumber,
             'start_time' => $start,
             'end_time' => $end,
-            'end_date' => $end->toDateString(),
             'security_note' => $this->faker->sentence,
             'status' => 'pending',
         ];

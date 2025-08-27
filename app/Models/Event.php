@@ -22,14 +22,12 @@ class Event extends Model
         'organizer_phone',
         'start_time',
         'end_time',
-        'end_date',
         'security_note',
         'status',
     ];
 
     protected $casts = [
         'campus' => \App\Enums\Campus::class,
-        'end_date' => 'date',
     ];
 
     public function user()
