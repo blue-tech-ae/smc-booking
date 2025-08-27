@@ -36,6 +36,9 @@ class EventFactory extends Factory
             'start_time' => $start,
             'end_time' => $end,
             'security_note' => $this->faker->sentence,
+            'setup_details' => [],
+            'gift_details' => [],
+            'floral_details' => [],
             'status' => 'pending',
         ];
     }

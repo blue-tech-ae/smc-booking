@@ -23,11 +23,17 @@ class Event extends Model
         'start_time',
         'end_time',
         'security_note',
+        'setup_details',
+        'gift_details',
+        'floral_details',
         'status',
     ];
 
     protected $casts = [
         'campus' => \App\Enums\Campus::class,
+        'setup_details' => 'array',
+        'gift_details' => 'array',
+        'floral_details' => 'array',
     ];
 
     public function user()
