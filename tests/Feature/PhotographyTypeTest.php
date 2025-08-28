@@ -56,7 +56,9 @@ class PhotographyTypeTest extends TestCase
             'services' => [
                 [
                     'service_type' => 'photography',
-                    'details' => [],
+                    'details' => [
+                        'required' => true,
+                    ],
                 ],
             ],
         ]);
