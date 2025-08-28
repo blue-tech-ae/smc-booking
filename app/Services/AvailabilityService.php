@@ -18,7 +18,6 @@ class AvailabilityService
     public function photographyIsAvailable(string $startTime, string $endTime): bool
     {
         return !EventService::where('service_type', 'photography')
-            ->where('details->required', true)
             ->whereHas('event', function ($query) use ($startTime, $endTime) {
                 $query->where('start_time', '<', $endTime)
                       ->where('end_time', '>', $startTime);

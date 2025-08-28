@@ -46,7 +46,6 @@ class AvailabilityTest extends TestCase
             'service_type' => 'photography',
             'assigned_to' => $photographer->id,
             'details' => [
-                'required' => true,
                 'photographer_required' => true,
                 'loan_camera_required' => false,
             ],

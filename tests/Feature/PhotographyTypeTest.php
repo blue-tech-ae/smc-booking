@@ -38,7 +38,7 @@ class PhotographyTypeTest extends TestCase
         $this->assertDatabaseHas('photography_types', ['name' => 'Wedding']);
     }
 
-    public function test_event_creation_requires_photography_options_when_required(): void
+    public function test_event_creation_requires_photography_options(): void
     {
         $user = User::factory()->create();
         $user->assignRole('General');
@@ -56,9 +56,7 @@ class PhotographyTypeTest extends TestCase
             'services' => [
                 [
                     'service_type' => 'photography',
-                    'details' => [
-                        'required' => true,
-                    ],
+                    'details' => [],
                 ],
             ],
         ]);
