@@ -45,7 +45,11 @@ class AvailabilityTest extends TestCase
             'event_id' => $event->id,
             'service_type' => 'photography',
             'assigned_to' => $photographer->id,
-            'details' => [],
+            'details' => [
+                'required' => true,
+                'photographer_required' => true,
+                'loan_camera_required' => false,
+            ],
         ]);
 
         $response = $this->getJson('/api/availability?start_time=' . now()->addDay()->toDateTimeString() . '&end_time=' . now()->addDays(2)->toDateTimeString());

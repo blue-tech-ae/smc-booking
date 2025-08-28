@@ -38,7 +38,7 @@ class PhotographyTypeTest extends TestCase
         $this->assertDatabaseHas('photography_types', ['name' => 'Wedding']);
     }
 
-    public function test_event_creation_requires_valid_photography_type_id(): void
+    public function test_event_creation_requires_photography_options(): void
     {
         $user = User::factory()->create();
         $user->assignRole('General');
@@ -58,41 +58,12 @@ class PhotographyTypeTest extends TestCase
                     'service_type' => 'photography',
                     'details' => [
                         'required' => true,
-                        'photography_type_id' => 999,
                     ],
                 ],
             ],
         ]);
 
         $response->assertStatus(422);
-    }
-
-    public function test_event_creation_allows_missing_photography_type_id(): void
-    {
-        $user = User::factory()->create();
-        $user->assignRole('General');
-
-        $location = Location::factory()->create();
-        $department = Department::factory()->create();
-
-        $response = $this->actingAs($user)->postJson('/api/events', [
-            'title' => 'Test',
-            'location_id' => $location->id,
-            'start_time' => now()->addDay()->toDateTimeString(),
-            'end_time' => now()->addDays(2)->toDateTimeString(),
-            'department' => $department->name,
-            'campus' => $location->campus->value,
-            'services' => [
-                [
-                    'service_type' => 'photography',
-                    'details' => [
-                        'required' => true,
-                    ],
-                ],
-            ],
-        ]);
-
-        $response->assertStatus(201);
     }
 
     public function test_can_fetch_photography_types(): void
