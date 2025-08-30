@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use App\Models\Event;
+use App\Models\Location;
 use Illuminate\Validation\Rules\Enum;
 use App\Enums\Campus;
 
@@ -48,6 +49,19 @@ class UpdateEventRequest extends FormRequest
             'end_time' => 'sometimes|date|after_or_equal:start_time',
             'services' => 'sometimes|array',
         ];
+    }
+
+    protected function prepareForValidation(): void
+    {
+        if ($name = $this->input('location')) {
+            $event = $this->route('event');
+            $campus = $this->input('campus', $event->campus ?? null);
+            $location = Location::firstOrCreate([
+                'name' => $name,
+                'campus' => $campus,
+            ]);
+            $this->merge(['location_id' => $location->id]);
+        }
     }
 
     public function withValidator($validator)
