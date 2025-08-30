@@ -21,10 +21,10 @@ use Illuminate\Support\Facades\Auth;
  *         @OA\Schema(type="string", enum={"draft","pending","approved","rejected","cancelled"})
  *     ),
  *     @OA\Parameter(
- *         name="location_id",
+ *         name="location",
  *         in="query",
  *         required=false,
- *         @OA\Schema(type="integer")
+ *         @OA\Schema(type="string")
  *     ),
  *     @OA\Parameter(
  *         name="date",

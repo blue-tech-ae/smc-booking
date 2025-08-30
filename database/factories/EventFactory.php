@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use App\Models\Event;
 use App\Models\User;
-use App\Models\Location;
 use App\Models\Department;
 use App\Enums\Campus;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -24,7 +23,7 @@ class EventFactory extends Factory
 
         return [
             'user_id' => User::factory(),
-            'location_id' => Location::factory(),
+            'location' => $this->faker->city,
             'department' => Department::factory()->create()->name,
             'campus' => $this->faker->randomElement(array_column(Campus::cases(), 'value')),
             'title' => $this->faker->sentence,
@@ -41,20 +40,6 @@ class EventFactory extends Factory
             'floral_details' => [],
             'status' => 'pending',
         ];
-    }
-
-    public function configure()
-    {
-        return $this->afterMaking(function (Event $event) {
-            if ($event->location) {
-                $event->campus = $event->location->campus->value;
-            }
-        })->afterCreating(function (Event $event) {
-            if ($event->location) {
-                $event->campus = $event->location->campus->value;
-                $event->save();
-            }
-        });
     }
 }
 

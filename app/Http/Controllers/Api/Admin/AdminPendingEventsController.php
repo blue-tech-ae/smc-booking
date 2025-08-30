@@ -14,10 +14,10 @@ use Illuminate\Http\JsonResponse;
  *     tags={"Admin - Events"},
  *     security={{"sanctum":{}}},
  *     @OA\Parameter(
- *         name="location_id",
+ *         name="location",
  *         in="query",
  *         required=false,
- *         @OA\Schema(type="integer")
+ *         @OA\Schema(type="string")
  *     ),
  *     @OA\Parameter(
  *         name="start_date",

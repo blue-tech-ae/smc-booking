@@ -14,7 +14,7 @@ class PendingEventsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'location_id' => 'nullable|exists:locations,id',
+            'location' => 'nullable|string|max:255',
             'start_date' => 'nullable|date',
             'title' => 'nullable|string|max:255',
             'organizer_email' => 'nullable|email',

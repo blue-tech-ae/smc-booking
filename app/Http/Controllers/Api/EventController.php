@@ -159,7 +159,7 @@ class EventController extends Controller
      */
     public function myBookings(Request $request): JsonResponse
     {
-        $bookings = Event::with('location', 'services')
+        $bookings = Event::with('services')
             ->where('user_id', $request->user()->id)
             ->orderByDesc('created_at')
             ->get();
@@ -194,7 +194,7 @@ class EventController extends Controller
             return response()->json(['error' => 'You are not authorized to view this event.'], 403);
         }
 
-        $event->load('location', 'services');
+        $event->load('services');
 
         return response()->json(['data' => $event]);
     }

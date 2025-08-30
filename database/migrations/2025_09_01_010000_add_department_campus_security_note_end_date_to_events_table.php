@@ -18,7 +18,7 @@ return new class extends Migration
                 Campus::DAVISSON_STREET->value,
                 Campus::DALTON_ROAD->value,
                 Campus::SGC->value,
-            ])->after('location_id');
+            ])->after('location');
             $table->text('security_note')->nullable()->after('end_time');
         });
     }

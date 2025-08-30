@@ -9,7 +9,7 @@ class AssignmentService
 {
     public function getMyAssignedEvents(int $userId, string $role, array $filters = []): Collection
     {
-        $query = Event::with(['location', 'user', 'services'])
+        $query = Event::with(['user', 'services'])
             ->whereHas('services', function ($q) use ($userId, $role) {
                 $q->where('assigned_to', $userId)
                   ->where('service_type', $role);
@@ -19,8 +19,8 @@ class AssignmentService
             $query->where('status', $filters['status']);
         }
 
-        if (!empty($filters['location_id'])) {
-            $query->where('location_id', $filters['location_id']);
+        if (!empty($filters['location'])) {
+            $query->where('location', $filters['location']);
         }
 
         if (!empty($filters['date'])) {

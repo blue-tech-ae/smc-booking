@@ -68,15 +68,15 @@ class UpdateEventRequest extends FormRequest
     {
         $validator->after(function ($validator) {
             $event = $this->route('event');
-            $locationId = $this->input('location_id', $event->location_id ?? null);
+            $location = $this->input('location', $event->location ?? null);
             $startTime = $this->input('start_time', $event->start_time ?? null);
             $endTime = $this->input('end_time', $event->end_time ?? null);
 
-            if (!$locationId || !$startTime || !$endTime) {
+            if (!$location || !$startTime || !$endTime) {
                 return;
             }
 
-            $conflict = Event::where('location_id', $locationId)
+            $conflict = Event::where('location', $location)
                 ->where('id', '!=', $event->id)
                 ->where('start_time', '<', $endTime)
                 ->where('end_time', '>', $startTime)

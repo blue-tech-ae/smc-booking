@@ -15,7 +15,7 @@ class FilterMyAssignmentsRequest extends FormRequest
     {
         return [
             'status' => 'nullable|in:pending,approved,rejected,cancelled,draft',
-            'location_id' => 'nullable|exists:locations,id',
+            'location' => 'nullable|string|max:255',
             'date' => 'nullable|date',
             'query' => 'nullable|string|max:255',
         ];

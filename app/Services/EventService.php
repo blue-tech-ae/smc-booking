@@ -31,7 +31,7 @@ class EventService
             $currentStart = (clone $start)->addDays($i * $interval);
             $currentEnd = (clone $end)->addDays($i * $interval);
 
-            $hasConflict = Event::where('location_id', $request->location_id)
+            $hasConflict = Event::where('location', $request->location)
                 ->where('start_time', '<', $currentEnd)
                 ->where('end_time', '>', $currentStart)
                 ->exists();
@@ -43,7 +43,7 @@ class EventService
 
             $event = Event::create([
                 'user_id' => $request->user()->id,
-                'location_id' => $request->location_id,
+                'location' => $request->location,
                 'department' => $request->department,
                 'campus' => $request->campus,
                 'title' => $request->title,

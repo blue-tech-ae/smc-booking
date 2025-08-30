@@ -5,8 +5,6 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Rules\LocationAvailable;
 use App\Rules\EventLeadTime;
-use App\Models\Event;
-use App\Models\Location;
 use Illuminate\Validation\Rules\Enum;
 use App\Enums\Campus;
 
@@ -65,7 +63,7 @@ class StoreEventRequest extends FormRequest
                 'required',
                 'date',
                 'after_or_equal:start_time',
-                new LocationAvailable($this->location_id, $this->start_time, $this->end_time)
+                new LocationAvailable($this->location, $this->start_time, $this->end_time)
             ],
             'recurrence_frequency' => 'nullable|in:daily,weekly,fortnightly',
             'recurrence_count' => 'nullable|integer|min:1|max:52|required_with:recurrence_frequency',
@@ -73,33 +71,4 @@ class StoreEventRequest extends FormRequest
         ];
     }
 
-    protected function prepareForValidation(): void
-    {
-        if ($name = $this->input('location')) {
-            $campus = $this->input('campus');
-            $location = Location::firstOrCreate([
-                'name' => $name,
-                'campus' => $campus,
-            ]);
-            $this->merge(['location_id' => $location->id]);
-        }
-    }
-
-    public function withValidator($validator)
-    {
-        $validator->after(function ($validator) {
-            if (!$this->location_id || !$this->start_time || !$this->end_time) {
-                return;
-            }
-
-            $conflict = Event::where('location_id', $this->location_id)
-                ->where('start_time', '<', $this->end_time)
-                ->where('end_time', '>', $this->start_time)
-                ->exists();
-
-            if ($conflict) {
-                $validator->errors()->add('start_time', 'The selected location is unavailable for the chosen time.');
-            }
-        });
-    }
 }
