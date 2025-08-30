@@ -35,7 +35,7 @@ class EventAdditionalDetailsTest extends TestCase
 
         $payload = [
             'title' => 'Test Event',
-            'location_id' => $location->id,
+            'location' => $location->name,
             'department' => $department->name,
             'campus' => $location->campus->value,
             'start_time' => $start->toDateTimeString(),
@@ -82,7 +82,7 @@ class EventAdditionalDetailsTest extends TestCase
         $end = (clone $start)->addHours(2);
 
         $event = Event::factory()->for($user)->create([
-            'location_id' => $location->id,
+            'location' => $location->name,
             'department' => $department->name,
             'campus' => $location->campus->value,
             'start_time' => $start,

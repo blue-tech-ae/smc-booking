@@ -12,7 +12,7 @@ class Event extends Model
     protected $fillable = [
         'user_id',
         'department',
-        'location_id',
+        'location',
         'campus',
         'title',
         'details',
@@ -39,11 +39,6 @@ class Event extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function location()
-    {
-        return $this->belongsTo(Location::class);
     }
 
     public function services()

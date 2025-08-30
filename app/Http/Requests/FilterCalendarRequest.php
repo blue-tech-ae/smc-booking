@@ -21,7 +21,7 @@ class FilterCalendarRequest extends FormRequest
     {
         return [
             'status' => 'nullable|in:pending,service_approved,approved,rejected,cancelled,draft',
-            'location_id' => 'nullable|exists:locations,id',
+            'location' => 'nullable|string|max:255',
             'date' => 'nullable|date', // مثال: 2025-06-10
             'search' => 'nullable|string|max:255',
             'role' => 'nullable|in:catering,photography,security',

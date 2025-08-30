@@ -23,7 +23,7 @@ class UpdateEventRequest extends FormRequest
             'organizer_name' => 'nullable|string|max:255',
             'organizer_email' => 'nullable|email|max:255',
             'organizer_phone' => 'nullable|string|max:20',
-            'location_id' => 'sometimes|exists:locations,id',
+            'location' => 'sometimes|string|max:255',
             'department' => 'sometimes|string|max:255',
             'campus' => ['sometimes', new Enum(Campus::class)],
             'security_note' => 'nullable|string',
@@ -54,15 +54,15 @@ class UpdateEventRequest extends FormRequest
     {
         $validator->after(function ($validator) {
             $event = $this->route('event');
-            $locationId = $this->input('location_id', $event->location_id ?? null);
+            $location = $this->input('location', $event->location ?? null);
             $startTime = $this->input('start_time', $event->start_time ?? null);
             $endTime = $this->input('end_time', $event->end_time ?? null);
 
-            if (!$locationId || !$startTime || !$endTime) {
+            if (!$location || !$startTime || !$endTime) {
                 return;
             }
 
-            $conflict = Event::where('location_id', $locationId)
+            $conflict = Event::where('location', $location)
                 ->where('id', '!=', $event->id)
                 ->where('start_time', '<', $endTime)
                 ->where('end_time', '>', $startTime)
@@ -72,15 +72,6 @@ class UpdateEventRequest extends FormRequest
                 $validator->errors()->add('start_time', 'The selected location is unavailable for the chosen time.');
             }
 
-            $campus = $this->input('campus', $event->campus ?? null);
-            if ($campus && $locationId) {
-                $matches = \App\Models\Location::where('id', $locationId)
-                    ->where('campus', $campus)
-                    ->exists();
-                if (!$matches) {
-                    $validator->errors()->add('location_id', 'The selected location does not belong to the chosen campus.');
-                }
-            }
         });
     }
 }

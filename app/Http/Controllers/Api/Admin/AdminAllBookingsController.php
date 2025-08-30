@@ -14,7 +14,7 @@ use Illuminate\Http\JsonResponse;
  *     tags={"Admin - Events"},
  *     security={{"sanctum":{}}},
  *     @OA\Parameter(name="status", in="query", @OA\Schema(type="string", enum={"pending","service_approved","approved","rejected","cancelled","draft"})),
- *     @OA\Parameter(name="location_id", in="query", @OA\Schema(type="integer")),
+ *     @OA\Parameter(name="location", in="query", @OA\Schema(type="string")),
  *     @OA\Parameter(name="start_date", in="query", @OA\Schema(type="string", format="date")),
  *     @OA\Parameter(name="organizer_email", in="query", @OA\Schema(type="string", format="email")),
  *     @OA\Parameter(name="title", in="query", @OA\Schema(type="string")),

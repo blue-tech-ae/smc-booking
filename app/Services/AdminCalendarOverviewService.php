@@ -10,14 +10,14 @@ class AdminCalendarOverviewService
 {
     public function getOverview(array $filters, ?string $role = null): Collection
     {
-        $query = Event::with('location', 'user', 'services');
+        $query = Event::with('user', 'services');
 
         if (!empty($filters['status'])) {
             $query->where('status', $filters['status']);
         }
 
-        if (!empty($filters['location_id'])) {
-            $query->where('location_id', $filters['location_id']);
+        if (!empty($filters['location'])) {
+            $query->where('location', $filters['location']);
         }
 
         if (!empty($filters['date'])) {

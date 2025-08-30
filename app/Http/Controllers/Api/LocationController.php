@@ -65,7 +65,7 @@ class LocationController extends Controller
         $start = Carbon::parse($month . '-01')->startOfMonth();
         $end = Carbon::parse($month . '-01')->endOfMonth();
 
-        $days = Event::where('location_id', $location->id)
+        $days = Event::where('location', $location->name)
             ->whereBetween('start_time', [$start, $end])
             ->pluck('start_time')
             ->map(fn ($date) => Carbon::parse($date)->day)

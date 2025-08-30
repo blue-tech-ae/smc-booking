@@ -8,7 +8,7 @@
     <p>A new event has been created and requires your approval.</p>
     <ul>
         <li><strong>Title:</strong> {{ $event->title }}</li>
-        <li><strong>Location ID:</strong> {{ $event->location_id }}</li>
+        <li><strong>Location:</strong> {{ $event->location }}</li>
         <li><strong>Organizer:</strong> {{ $event->organizer_name }}</li>
         <li><strong>Organizer Email:</strong> {{ $event->organizer_email }}</li>
         <li><strong>Organizer Phone:</strong> {{ $event->organizer_phone }}</li>

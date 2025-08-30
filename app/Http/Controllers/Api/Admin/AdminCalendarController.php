@@ -21,10 +21,10 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
  *         @OA\Schema(type="string", enum={"draft","pending","service_approved","approved","rejected","cancelled"})
  *     ),
  *     @OA\Parameter(
- *         name="location_id",
+ *         name="location",
  *         in="query",
  *         required=false,
- *         @OA\Schema(type="integer")
+ *         @OA\Schema(type="string")
  *     ),
  *     @OA\Parameter(
  *         name="date",
@@ -105,7 +105,7 @@ class AdminCalendarController extends Controller
                     $event->start_time,
                     $event->end_time,
                     $event->status,
-                    optional($event->location)->name,
+                    $event->location,
                     optional($event->user)->name,
                 ]);
             }

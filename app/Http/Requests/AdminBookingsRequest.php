@@ -15,7 +15,7 @@ class AdminBookingsRequest extends FormRequest
     {
         return [
             'status' => 'nullable|in:pending,service_approved,approved,rejected,cancelled,draft',
-            'location_id' => 'nullable|exists:locations,id',
+            'location' => 'nullable|string|max:255',
             'start_date' => 'nullable|date',
             'organizer_email' => 'nullable|email',
             'title' => 'nullable|string|max:255',
