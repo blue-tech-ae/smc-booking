@@ -40,7 +40,7 @@ class AdminEmailNotificationTest extends TestCase
 
         $response = $this->actingAs($user)->postJson('/api/events', [
             'title' => 'Email Test',
-            'location_id' => $location->id,
+            'location' => $location->name,
             'start_time' => now()->addDays(15)->toDateTimeString(),
             'end_time' => now()->addDays(16)->toDateTimeString(),
             'expected_attendance' => 20,

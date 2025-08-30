@@ -48,7 +48,7 @@ class PhotographyTypeTest extends TestCase
 
         $response = $this->actingAs($user)->postJson('/api/events', [
             'title' => 'Test',
-            'location_id' => $location->id,
+            'location' => $location->name,
             'start_time' => now()->addDay()->toDateTimeString(),
             'end_time' => now()->addDays(2)->toDateTimeString(),
             'department' => $department->name,

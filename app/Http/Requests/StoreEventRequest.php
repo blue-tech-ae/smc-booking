@@ -6,6 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use App\Rules\LocationAvailable;
 use App\Rules\EventLeadTime;
 use App\Models\Event;
+use App\Models\Location;
 use Illuminate\Validation\Rules\Enum;
 use App\Enums\Campus;
 
@@ -33,7 +34,7 @@ class StoreEventRequest extends FormRequest
             'organizer_name' => 'nullable|string|max:255',
             'organizer_email' => 'nullable|email|max:255',
             'organizer_phone' => 'nullable|string|max:20',
-            'location_id' => 'required|exists:locations,id',
+            'location' => 'required|string|max:255',
             'department' => 'required|string|max:255',
             'campus' => ['required', new Enum(Campus::class)],
             'security_note' => 'nullable|string',
@@ -72,6 +73,18 @@ class StoreEventRequest extends FormRequest
         ];
     }
 
+    protected function prepareForValidation(): void
+    {
+        if ($name = $this->input('location')) {
+            $campus = $this->input('campus');
+            $location = Location::firstOrCreate([
+                'name' => $name,
+                'campus' => $campus,
+            ]);
+            $this->merge(['location_id' => $location->id]);
+        }
+    }
+
     public function withValidator($validator)
     {
         $validator->after(function ($validator) {
@@ -86,15 +99,6 @@ class StoreEventRequest extends FormRequest
 
             if ($conflict) {
                 $validator->errors()->add('start_time', 'The selected location is unavailable for the chosen time.');
-            }
-
-            if ($this->campus && $this->location_id) {
-                $matches = \App\Models\Location::where('id', $this->location_id)
-                    ->where('campus', $this->campus)
-                    ->exists();
-                if (!$matches) {
-                    $validator->errors()->add('location_id', 'The selected location does not belong to the chosen campus.');
-                }
             }
         });
     }
